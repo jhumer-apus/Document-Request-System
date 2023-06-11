@@ -4,7 +4,7 @@ export default {
     host: process.env.APP_URL, // default: localhost
   },
   head: {
-    title: "client",
+    title: "eDokumento",
     htmlAttrs: {
       lang: "en",
     },
@@ -14,7 +14,7 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
   },
 
   // use these settings to use custom css

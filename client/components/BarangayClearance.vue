@@ -15,7 +15,6 @@
             <div class="mt-16">
                 <h1>BARANGAY CLEARANCE</h1>
             </div>
-            <h1>BARANGAY CLEARANCE</h1>
             <div class="grid grid-cols-3 gap-x-8 bg-transparent mt-20">
                 <div class="pl-16">
                     <div class="par">
@@ -108,7 +107,7 @@ import moment from 'moment'
 import jsPDF from'jspdf'
 import backgroundImage from '~/assets/images/Maranding_Logo.png'
 export default {
-    propse:['user'],
+    props:['user'],
  data(){
         return{
             spinning:false,

@@ -16,6 +16,9 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
   },
+  generate: {
+    fallback: true,
+  },
 
   // use these settings to use custom css
 

@@ -12,7 +12,7 @@
                     </div>
                     <p class="text-white text-center">Request Document</p>
                 </button>
-                <button class="icon-container" @click="$router.push('/user/request-history/all')">
+                <button class="icon-container" @click="goToRequestHistory('all')">
                     <div class="icon-wrapper">
                         <font-awesome-icon :icon="['fas', 'clock-rotate-left']" class="icon"/>
                     </div>
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="second-container" @click="$router.push('/user/request-history/pending')">
+                    <button class="second-container" @click="goToRequestHistory('pending')">
                         <span>See all pending request</span>
                         <font-awesome-icon :icon="['fas', 'arrow-right']" />
                     </button>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="second-container" @click="$router.push('/user/request-history/approved')">
+                    <button class="second-container" @click="goToRequestHistory('approved')">
                         <span>See all approved request</span>
                         <font-awesome-icon :icon="['fas', 'arrow-right']" />
                     </button>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="second-container" @click="$router.push('/user/request-history/rejected')">
+                    <button class="second-container" @click="goToRequestHistory('rejected')">
                         <span>See all rejected request</span>
                         <font-awesome-icon :icon="['fas', 'arrow-right']" />
                     </button>
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="second-container" @click="$router.push('/user/request-history/completed')">
+                    <button class="second-container" @click="goToRequestHistory('completed')">
                         <span>See all completed request</span>
                         <font-awesome-icon :icon="['fas', 'arrow-right']" />
                     </button>
@@ -114,6 +114,12 @@ export default {
         this.getCountRequest()
     },
     methods:{
+        goToRequestHistory(value){
+            this.$store.commit('request_history/updateStatus',{
+                status:value
+            })
+            this.$router.push('/user/request-history')
+        },
         dateNow(){
             return moment().format('dddd, MMMM Do'); 
         },

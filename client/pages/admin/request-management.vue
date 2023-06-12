@@ -1,9 +1,13 @@
 <template>
   <div class="main-container">
-    <h1>Request History</h1>
-    <p class="newRequest" @click="$router.push('/user/request')">+ MAKE NEW REQUEST</p><br>
-    <Search @search="search" :selected="$route.params.index" :options="options" placeholder="Search Request Document"/><br>
-    <RequestHistoryTable :data="data" @refresh="fetchHistories(currentPage,null)"/>
+    <h1>Request Management</h1>
+    <Search 
+      @search="search" 
+      :selected="$store.state.request_history.status?$store.state.request_history.status:'pending'" 
+      :options="options" 
+      placeholder="Search Requested Document"
+    />
+    <RequestManagementTable :data="data"/>
     <Pagination 
       :currentPage="currentPage"
       :lastPage="lastPage"
@@ -16,23 +20,34 @@
 <script>
 import moment from 'moment'
 export default {
-    layout: 'user',
+    layout: 'admin',
     data(){
       return{
         data:[],
-        options:['all','completed','approved','processing','pending','rejected'],
         currentPage: 1,
         lastPage:1,
         spinning:false,
+        nameSearch:'',
+        options:['all','completed','approved','processing','pending','rejected'],
       }
     },
     mounted(){
+      if(!this.$store.state.request_history.status){
+        this.$store.commit('request_history/updateStatus',{
+          status:'pending'
+        })
+      }
       this.fetchHistories(this.currentPage)
     },
-    methods:{
-      newRequest(){
-
+    watch:{
+      '$store.state.trigger.refreshRequestTable'(){
+        this.fetchHistories()
       },
+      '$store.state.request_history.status'(){
+        this.fetchHistories(this.currentPage)
+      }
+    },
+    methods:{
       paginate(value){
         switch(value){
           case "prev":
@@ -44,14 +59,15 @@ export default {
           default:
             var pageNumber = this.currentPage
         }
-        this.fetchHistories(pageNumber,null)
+        this.fetchHistories(pageNumber)
       },
-      async fetchHistories(pageNumber,search){
+      async fetchHistories(pageNumber){
         this.spinning = true
         var params = {
-          search:search
+          search:this.namesSearch
         }
-        await this.$axios.get('/user/request/get-requests/'+this.$route.params.index+'?page=' + pageNumber, {params}).then(response=>{
+        let requestStatus = this.$store.state.request_history.status
+        await this.$axios.get('/admin/request/get-requests/'+requestStatus+'?page=' + pageNumber, {params}).then(response=>{
           this.data = response.data.data
           this.currentPage = response.data.current_page
           this.lastPage = response.data.last_page
@@ -61,7 +77,9 @@ export default {
         })
       },
     search(value){
-      this.fetchHistories(1,value)
+      this.currentPage = 1
+      this.nameSearch = value
+      this.fetchHistories(this.currentPage,value)
     }
   },
 
@@ -76,7 +94,7 @@ h1{
   @apply text-2xl font-bold text-black
 }
 .newRequest{
-  @apply text-right text-lg text-sky-700 font-bold cursor-pointer hover:text-sky-500
+  @apply text-right text-lg text-sky-700 font-bold
 }
 
 </style>

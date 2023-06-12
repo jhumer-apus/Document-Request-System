@@ -305,6 +305,7 @@ class RequestDocument{
         $requestTransaction = Request::where('id', $request_id)->update([
             'document_id'=> $document_id,
             'purpose'=>$purpose,
+            'status' => 'pending',
             'updated_at'=>now()
         ]);
 

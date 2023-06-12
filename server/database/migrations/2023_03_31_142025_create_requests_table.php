@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('valid_id')->index();
             $table->date('date_requested');
             $table->string('purpose');
-            $table->enum('status', ['pending','proccessing','approved', 'rejected', 'completed'])->index();
+            $table->enum('status', ['pending','proccessing','approved', 'rejected', 'completed','expired'])->index();
             $table->decimal('fee');
             $table->longText('comment')->nullable();
             $table->timestamps();

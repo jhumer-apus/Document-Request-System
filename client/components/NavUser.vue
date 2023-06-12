@@ -11,7 +11,7 @@
             <ul>
                 <li><button @click="$router.push('/user/dashboard')" class="nav_link"><span><font-awesome-icon :icon="['fas', 'table-list']" /></span>Dashboard</button></li>
                 <li><button @click="$router.push('/user/request')" class="nav_link"><span><font-awesome-icon :icon="['fas', 'file-invoice']" /></span>Request Document</button></li>
-                <li><button @click="$router.push('/user/request-history/all')" class="nav_link"><span><font-awesome-icon :icon="['fas', 'clock-rotate-left']" /></span>Request History</button></li>
+                <li><button @click="$router.push('/user/request-history')" class="nav_link"><span><font-awesome-icon :icon="['fas', 'clock-rotate-left']" /></span>Request History</button></li>
                 <li><button @click="$router.push('/user/account')" class="nav_link"><span><font-awesome-icon :icon="['fas', 'user']" /></span>Account</button></li>
                 <li class="pl-12 py-4 hover:bg-stone-900 cursor-pointer" @click="logout"><span class="mr-4"><font-awesome-icon :icon="['fas', 'power-off']" /></span>Logout</li>
             </ul>

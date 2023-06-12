@@ -23,11 +23,9 @@ export default {
     watch:{
         
         select(value){
-            if(this.$auth.$state.strategy == 'userAuth'){
-                this.$router.push('/user/request-history/'+value)
-            }
-            this.$router.push('/admin/request-management/'+value)
-            
+            this.$store.commit('request_history/updateStatus',{
+                status:value
+            })
         }
     }
 }

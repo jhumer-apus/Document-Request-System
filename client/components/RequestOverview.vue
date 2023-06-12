@@ -12,7 +12,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="second-container" @click="$router.push('/admin/request-management/pending')">
+                <button class="second-container" @click="goToRequestManagement('pending')">
                     <span>See all pending request</span>
                     <font-awesome-icon :icon="['fas', 'arrow-right']" />
                 </button>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="second-container" @click="$router.push('/admin/request-management/approved')">
+                <button class="second-container" @click="goToRequestManagement('approved')">
                     <span>See all approved request</span>
                     <font-awesome-icon :icon="['fas', 'arrow-right']" />
                 </button>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="second-container" @click="$router.push('/admin/request-management/rejected')">
+                <button class="second-container" @click="goToRequestManagement('rejected')">
                     <span>See all rejected request</span>
                     <font-awesome-icon :icon="['fas', 'arrow-right']" />
                 </button>
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="second-container" @click="$router.push('/admin/request-management/completed')">
+                <button class="second-container" @click="goToRequestManagement('completed')">
                     <span>See all completed request</span>
                     <font-awesome-icon :icon="['fas', 'arrow-right']" />
                 </button>
@@ -78,6 +78,12 @@ export default {
         this.getCountRequest()
     },
     methods:{
+        goToRequestManagement(value){
+            this.$store.commit('request_history/updateStatus',{
+                status:value
+            })
+            this.$router.push('/admin/request-management')
+        },
         async getCountRequest(){
             await this.$axios.get('/admin/dashboard/count-request').then(response=>{
                 this.countRequest = response.data

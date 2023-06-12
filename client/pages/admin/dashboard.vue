@@ -2,7 +2,7 @@
     <div class="p-8 bg-slate-100 min-h-screen text-black">
         <div class="bg-cyan-100 py-12 px-12 rounded-3xl mb-12">
             <span class="text-4xl text-cyan-700"><b>{{dateNow()}}</b></span><br>
-            <span class="text-2xl">Good morning, {{$auth.state.user.first_name}}!</span>
+            <span class="text-2xl">Good {{greetByHours()}}, {{$auth.state.user.first_name}}!</span>
         </div>
         <div class="grid grid-cols-2">
             <RecentActivities />
@@ -25,6 +25,17 @@ export default {
         this.getCountRequest()
     },
     methods:{
+        greetByHours(){
+            let date = new Date()
+            let hours = date.getHours()
+            if(hours>=0 && hours<12){
+                return "Morning"
+            }else if(hours>=12 && hours<18){
+                return "Afternoon"
+            }else if(hours>=18 && hours<24){
+                return "Evening"
+            }
+        },
         dateNow(){
             return moment().format('dddd, MMMM Do'); 
         },

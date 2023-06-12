@@ -218,7 +218,6 @@ class Users
             'fathers_firstname' => 'required|string',
             'fathers_middlename' => 'required|string',
             'fathers_lastname' => 'required|string',
-            'password' => 'nullable|string|min:8',
         );
 
         $validator = Validator::make($payload->all(), $rules);
@@ -252,10 +251,6 @@ class Users
             'fathers_middlename' => $payload->fathers_middlename,
             'fathers_lastname' => $payload->fathers_lastname,
         );
-
-        if($payload->password){
-            $data['password'] = bcrypt($payload->password);
-        }
         $id = Auth::user()->id;
         $updateTransaction = User::where('id', $id)->update($data);
         if(!$updateTransaction){

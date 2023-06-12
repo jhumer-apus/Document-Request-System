@@ -209,7 +209,6 @@ class Admins
             'mothers_firstname' => 'required|string',
             'mothers_middlename' => 'required|string',
             'mothers_lastname' => 'required|string',
-            'password' => 'nullable|string|min:8',
         );
 
         $validator = Validator::make($payload->all(), $rules);
@@ -240,10 +239,6 @@ class Admins
             'mothers_middlename' => $payload->mothers_middlename,
             'mothers_lastname' => $payload->mothers_lastname,
         );
-
-        if($payload->password){
-            $data['password'] = Hash::make($payload->password);
-        }
         $id = Auth::user()->id;
         $updateTransaction = Admin::where('id', $id)->update($data);
         if(!$updateTransaction){

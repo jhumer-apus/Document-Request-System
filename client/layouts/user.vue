@@ -17,6 +17,9 @@ export default {
         updateRequired:false
       }
     },
+    mounted(){
+      this.getUserData()
+    },
     methods:{
       async getUserData(){
             await this.$axios.get('/user/get-details/').then(response=>{

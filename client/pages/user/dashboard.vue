@@ -2,7 +2,7 @@
     <div class="p-8 bg-slate-100 min-h-screen text-black">
         <div class="bg-cyan-100 py-12 px-12 rounded-3xl mb-12">
             <span class="text-4xl text-cyan-700"><b>{{dateNow()}}</b></span><br>
-            <span class="text-2xl">Good morning, {{$auth.state.user.first_name}}!</span>
+            <span class="text-2xl">Good {{greetByHours()}}, {{$auth.state.user.first_name}}!</span>
         </div>
         <div class="border-b-2 border-slate-300 flex space-x-16 pb-16">
             <div class="md:flex space-x-8 md:pl-24">
@@ -114,6 +114,17 @@ export default {
         this.getCountRequest()
     },
     methods:{
+        greetByHours(){
+            let date = new Date()
+            let hours = date.getHours()
+            if(hours>=0 && hours<12){
+                return "Morning"
+            }else if(hours>=12 && hours<18){
+                return "Afternoon"
+            }else if(hours>=18 && hours<24){
+                return "Evening"
+            }
+        },
         goToRequestHistory(value){
             this.$store.commit('request_history/updateStatus',{
                 status:value

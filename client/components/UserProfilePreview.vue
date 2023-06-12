@@ -72,7 +72,8 @@ export default {
                 this.defaultPath = "Female_Icon.png"
           }
           let path = "../../server/storage/app/public/"+this.profilePicPath
-          let imgUrl = this.profilePicPath? require(path): require("../assets/images/"+this.defaultPath)
+          // let imgUrl = this.profilePicPath? require(path): require("../assets/images/"+this.defaultPath)
+          let imgUrl = this.profilePicPath? require("../../server/storage/app/public/"+this.profilePicPath): require("../assets/images/"+this.defaultPath)
         return imgUrl
       }
     }

@@ -4,9 +4,9 @@
     <form @submit.prevent="save" class="account-settings">
         <h2>Full Name</h2>
         <div class="md:flex space-x-8">
-            <label><input type="text" v-model="data.first_name" required>Last Name</label>
-            <label><input type="text" v-model="data.middle_name" required>First Name</label>
-            <label class="end-row"><input type="text" v-model="data.last_name" required>Middle Name</label>
+            <label><input type="text" v-model="data.last_name" required>Last Name</label>
+            <label><input type="text" v-model="data.first_name" required>First Name</label>
+            <label class="end-row"><input type="text" v-model="data.middle_name" required>Middle Name</label>
             <label class="end-row"><input type="text" v-model="data.suffix">Suffix</label>
         </div>
         <div class="input-container">

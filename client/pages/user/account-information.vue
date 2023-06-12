@@ -4,9 +4,9 @@
     <form @submit.prevent="save" class="account-settings">
         <h2>Full Name</h2>
         <div class="md:flex space-x-8">
-            <label><input type="text" v-model="data.first_name" required>Last Name</label>
-            <label><input type="text" v-model="data.middle_name" required>First Name</label>
-            <label class="end-row"><input type="text" v-model="data.last_name" required>Middle Name</label>
+            <label><input type="text" v-model="data.last_name" required>Last Name</label>
+            <label><input type="text" v-model="data.first_name" required>First Name</label>
+            <label class="end-row"><input type="text" v-model="data.middle_name" required>Middle Name</label>
             <label class="end-row"><input type="text" v-model="data.suffix">Suffix</label>
         </div>
         <div class="input-container">
@@ -57,6 +57,7 @@
             
         </div><br>
         <div class="formButtonContainer">
+            <button type="cancel" @click="$router.push('/user/dashboard')">Cancel</button>
             <button type="submit">Save</button>
         </div>
     </form>
@@ -149,7 +150,7 @@ h2{
 }
 
 .formButtonContainer > button[type="cancel"]{
-    @apply bg-slate-200 py-2 px-28 rounded-3xl text-2xl
+    @apply bg-slate-200 py-2 px-28 rounded-lg text-2xl
 }
 .formButtonContainer > button[type="submit"]{
     @apply bg-red-500 py-2 px-28 rounded-lg text-2xl text-white

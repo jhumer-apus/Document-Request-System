@@ -71,7 +71,8 @@ export default {
             }else{
                 this.defaultPath = "Female_Icon.png"
           }
-          let imgUrl = this.profilePicPath? require("../../api.edokumento.site/server/storage/app/public/"+this.profilePicPath): require("../assets/images/"+this.defaultPath)
+          let path = "../../server/storage/app/public/"+this.profilePicPath
+          let imgUrl = this.profilePicPath? require(path): require("../assets/images/"+this.defaultPath)
         return imgUrl
       }
     }

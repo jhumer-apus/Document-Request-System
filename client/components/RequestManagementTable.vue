@@ -26,8 +26,8 @@
         <BarangayPermit v-if="doc_id == 2" :user="user"/>
         <BarangayClearance v-if="doc_id == 3" :user="user"/>
         <BarangayClearanceBusiness v-if="doc_id == 4" :user="user"/>
-        <BarangayCeritificateResidency v-if="doc_id == 5" :user="user"/>
-        <BarangayCeritificateIndigency v-if="doc_id == 6" :user="user"/>
+        <BarangayCertificateResidency v-if="doc_id == 5" :user="user"/>
+        <BarangayCertificateIndigency v-if="doc_id == 6" :user="user"/>
     </div>
     
     

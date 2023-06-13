@@ -181,7 +181,6 @@ export default {
             
             if(files && files.length>0){
                 for(let i = 0; i<files.length; i++){
-                    // let type = files[i].type.split('/')[0] == 'image'? 'image': 'pdf'
                     this.supporting_documents.push(files[i])
                 }
             }
@@ -234,14 +233,7 @@ export default {
             }).catch(err=>{
                 this.spinning = false
             })
-        },
-        // async viewFile(filename){
-        //     await this.$axios.get('/user/request/get-pdf/'+filename,{responseType: 'blob'}).then(response=>{
-        //         const blob = new Blob([response.data],{type: "application/pdf"})
-        //         const objectUrl = window.URL.createObjectURL(blob)
-        //         window.open(objectUrl);
-        //     })
-        // },  
+        }, 
         async showFile(path, type, document){
             this.spinning = true
             if(path){
@@ -260,11 +252,7 @@ export default {
                     window.open(objectUrl);
                     this.spinning = false
             }
-            // this.currentPath = this.reupload_id_path?this.reupload_id_path:path
-            // this.viewImage = true
-
         },
-                // },  
         async showValidID(path, type, newID){
             this.spinning = true
             console.log(path)

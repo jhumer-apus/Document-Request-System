@@ -259,7 +259,6 @@ class RequestDocument{
     }
     public function getFile($payload){
         $path = $payload->path;
-        Log::info($path);
         return Storage::get('public/'.$path);
     }
     public function updateRequest($payload){

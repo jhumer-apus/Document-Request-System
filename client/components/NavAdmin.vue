@@ -40,13 +40,17 @@ export default {
             )
         },
         async getProfilePicture(){
-            await this.$axios.get('/admin/profile-pic').then(response=>{
-                    this.profilePicPath = response.data.path
+            await this.$axios.get('/admin/profile-pic',{responseType: 'blob'}).then(response=>{
+                const blob = new Blob([response.data],{type: "image/jpg"})
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                this.profilePicPath = e.target.result
                 }
-            )
+                reader.readAsDataURL(blob)
+            })
         },
         getImgUrl(){
-            const imgUrl = this.profilePicPath? require("../../server/storage/app/public/"+this.profilePicPath): require("~/assets/images/Maranding_Logo.png")
+            let imgUrl = this.profilePicPath? this.profilePicPath: require("~/assets/images/Maranding_Logo.png")
         return imgUrl
       }
     },

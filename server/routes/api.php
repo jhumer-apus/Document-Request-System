@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/get-requests/{status}', [RequestController::class, 'index']);
             Route::delete('/delete-request/{id}', [RequestController::class, 'deleteRequest']);
             Route::post('/update-request', [RequestController::class, 'updateRequest']);
-            Route::get('/get-pdf/{path}', [AdminRequestController::class, 'getPDF']);
+            Route::get('/get-file', [RequestController::class, 'getFile']);
         });
         Route::prefix('dashboard')->group(function(){
             Route::get('/count-request', [RequestController::class, 'countRequest']);
@@ -79,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/documents', [RequestController::class, 'getDocuments']);
             Route::get('/get-requests/{status}', [AdminRequestController::class, 'index']);
             Route::get('/get-request/{id}', [AdminRequestController::class, 'getRequestDetails']);
-            Route::get('/get-pdf/{path}', [AdminRequestController::class, 'getPDF']);
+            Route::get('/get-file', [AdminRequestController::class, 'getFile']);
             Route::put('/update-status', [AdminRequestController::class, 'updateRequestStatus']);
         });
         Route::prefix('dashboard')->group(function(){

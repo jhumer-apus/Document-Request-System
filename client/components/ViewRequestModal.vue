@@ -42,13 +42,18 @@
                 </button><br>
                 <h2>Valid ID</h2>
                 <div class="doc-container">
-                    <div v-if="details.id_type=='image'" class="doc-wrapper">
+                    <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
-                            <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+                            <div v-if="details.id_type=='image'" >
+                                <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+                            </div>
+                            <div v-if="details.id_type=='pdf'" >
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" style="color: #880bcb;" />
+                            </div>
                             <p class="font-semibold">{{reupload_id.name?reupload_id.name:details.id_name}}</p>
                         </div>
                         <div>
-                            <button class="view-file" @click="showImage(details.id_path)">View</button>
+                            <button class="view-file" @click="showValidID(details.id_path, details.id_type,reupload_id)">View</button>
                             <label for="reupload" class="reupload">
                                 Reupload
                                 <input type="file" id="reupload" accept="application/pdf, image/jpg, image/png, image/jpeg" v-on:change="reupload" hidden> 
@@ -64,24 +69,20 @@
                     <input type="file" id="supporting_documents" accept="application/pdf, image/jpg, image/png, image/jpeg" v-on:change="addFiles" multiple hidden> 
                 </label>
                 <div class="doc-container" v-for="(document,i) in supporting_documents" :key="i">
-                    <div v-if="document.type=='image' || document.type.split('/')[0] =='image'" class="doc-wrapper">
+                    <div  class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
-                            <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+
+                            <div v-if="document.type=='image' || document.type.split('/')[0] =='image'">
+                                <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+                            </div>
+                            <div  v-if="document.type=='pdf' || document.type.split('/')[1] =='pdf'">
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" style="color: #880bcb;" />
+                            </div>
+
                             <p class="font-semibold">{{document.original_name?document.original_name:document.name}}</p>
                         </div>
                         <div class="">
-                            <button class="view-file" @click="showImage(document.path)" v-if="document.path">View</button>
-                            <button class="delete" @click="deleteFile(i)">Delete</button>
-                        </div>
-                    </div>
-                    
-                    <div v-if="document.type=='pdf' || document.type.split('/')[1] =='pdf'" class="doc-wrapper">
-                        <div class="flex items-center space-x-4 w-fit">
-                            <font-awesome-icon :icon="['fas', 'file-pdf']" style="color: #880bcb;" />
-                            <p class="font-semibold">{{document.original_name?document.original_name:document.name}}</p>
-                        </div>
-                        <div class="">
-                            <button class="view-file" @click="viewFile(document.filename)" v-if="document.filename">View</button>
+                            <button class="view-file" @click="showFile(document.path, document.type,document)">View</button>
                             <button class="delete" @click="deleteFile(i)">Delete</button>
                         </div>
                     </div>
@@ -154,6 +155,7 @@ export default {
     methods:{
         reupload(e){
             this.reupload_id = e.target.files[0];
+            console.log(this.reupload_id)
 
             if(this.reupload_id){
                 const reader = new FileReader();
@@ -229,16 +231,60 @@ export default {
                 this.spinning = false
             })
         },
-        async viewFile(filename){
-            await this.$axios.get('/user/request/get-pdf/'+filename,{responseType: 'blob'}).then(response=>{
-                const blob = new Blob([response.data],{type: "application/pdf"})
-                const objectUrl = window.URL.createObjectURL(blob)
-                window.open(objectUrl);
-            })
-        },  
-        showImage(path){
-            this.currentPath = this.reupload_id_path?this.reupload_id_path:path
-            this.viewImage = true
+        // async viewFile(filename){
+        //     await this.$axios.get('/user/request/get-pdf/'+filename,{responseType: 'blob'}).then(response=>{
+        //         const blob = new Blob([response.data],{type: "application/pdf"})
+        //         const objectUrl = window.URL.createObjectURL(blob)
+        //         window.open(objectUrl);
+        //     })
+        // },  
+        async showFile(path, type, document){
+            this.spinning = true
+            let fileType = type == 'pdf'? "application/pdf": "image/jpg"
+            if(path){
+                var params ={
+                    path:path
+                }
+                await this.$axios.get('/user/request/get-file',{responseType: 'blob', params:params}).then(response=>{
+                    const blob = new Blob([response.data],{type: fileType})
+                    const objectUrl = window.URL.createObjectURL(blob)
+                    window.open(objectUrl);
+                    this.spinning = false
+                })
+            }else{
+                    const blob = new Blob([document],{type: fileType})
+                    const objectUrl = window.URL.createObjectURL(blob)
+                    window.open(objectUrl);
+                    this.spinning = false
+            }
+            // this.currentPath = this.reupload_id_path?this.reupload_id_path:path
+            // this.viewImage = true
+
+        },
+                // },  
+        async showValidID(path, type, newID){
+            this.spinning = true
+            let fileType = type == 'pdf'? "application/pdf": "image/jpg"
+            if(newID){
+                    const blob = new Blob([newID],{type: fileType})
+                    const objectUrl = window.URL.createObjectURL(blob)
+                    window.open(objectUrl);
+                    this.spinning = false
+                
+            }else{
+                var params ={
+                    path:path
+                }
+                await this.$axios.get('/user/request/get-file',{responseType: 'blob' ,params:params}).then(response=>{
+                    const blob = new Blob([response.data],{type: fileType})
+                    const objectUrl = window.URL.createObjectURL(blob)
+                    window.open(objectUrl);
+                    this.spinning = false
+                })
+            }
+
+            // this.currentPath = this.reupload_id_path?this.reupload_id_path:path
+            // this.viewImage = true
 
         },
         selectedDate(){

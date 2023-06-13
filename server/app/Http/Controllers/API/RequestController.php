@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Modules\RequestDocument;
+use Illuminate\Support\Facades\Log;
 
 class RequestController extends Controller
 {
@@ -32,8 +33,8 @@ class RequestController extends Controller
     public function getRequest(RequestDocument $requestDocument, $id){
         return $requestDocument->getRequest($id);
     }
-    public function getPDF(RequestDocument $requestDocument, $path){
-        return $requestDocument->getPDF($path);
+    public function getFile(Request $request, RequestDocument $requestDocument){
+        return $requestDocument->getFile($request);
     }
     public function updateRequest(RequestDocument $requestDocument, Request $request){
         return $requestDocument->updateRequest($request);

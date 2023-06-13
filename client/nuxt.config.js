@@ -1,5 +1,10 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+
+  server: {
+    host: process.env.APP_URL, // default: localhost
+  },
+
   head: {
     title: "eDokumento",
     htmlAttrs: {
@@ -12,9 +17,6 @@ export default {
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.png" }],
-  },
-  generate: {
-    fallback: true,
   },
 
   // use these settings to use custom css

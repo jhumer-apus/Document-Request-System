@@ -113,6 +113,7 @@ class AdminRequestDocument{
         $id = $payload->id;
         $status = $payload->status;
         $comment = $payload->comment;
+        $document = $payload->document;
 
         Request::where('id', $id)->update([
             'status' => $status,
@@ -133,7 +134,7 @@ class AdminRequestDocument{
         $admin = Auth::user();
         
         Reports::create([
-            'message' =>'Request '.$strId.' (barangay Clearance) was '.$status. ' by',
+            'message' =>'Request '.$strId.' '.$document.' was '.$status. ' by',
             'name' => $admin->first_name.' '.$admin->last_name,
             'status' => $status     
         ]);

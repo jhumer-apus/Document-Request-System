@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Log;
 
 class Residents
 {
-    public function getAllResidents($filter){
+    public function getAllResidents($payload){
+        $search = $payload->search;
         $user = User::select(
             'first_name',
             'middle_name',
@@ -19,7 +20,10 @@ class Residents
             'barangay',
             'municipality',
             'province'
-        )->get();
+        )->paginate(10);
+        // ->when(!empty($search), function ($query) use($search){
+        //     return $query->where('user.last_name','LIKE', $search.'%');
+        // })->paginate(10);
         return response()->json($user);
     }
     

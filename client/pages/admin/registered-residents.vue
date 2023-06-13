@@ -1,12 +1,11 @@
 <template>
   <div class="main-container">
     <h1>Register Residents</h1>
-    <Search 
+    <SearchOnly
       @search="search" 
-      :selected="$route.params.index" 
-      :options="options" 
-      placeholder="Search Residents"
-    />
+      placeholder="Search Name"
+    /><br>
+    <FilterResidents />
     <RegisterResidentsTable :data="data"/>
     <Pagination 
       :currentPage="currentPage"
@@ -31,12 +30,9 @@ export default {
       }
     },
     mounted(){
-      this.fetchResidents(this.currentPage)
+      this.fetchResidents(this.currentPage,null)
     },
     methods:{
-      newRequest(){
-
-      },
       paginate(value){
         switch(value){
           case "prev":
@@ -55,7 +51,7 @@ export default {
         var params = {
           search:search
         }
-        await this.$axios.get('/admin/residents/get-all-residents/'+this.$route.params.index+'?page=' + pageNumber, {params}).then(response=>{
+        await this.$axios.get('/admin/residents/get-all-residents?page=' + pageNumber, {params}).then(response=>{
           this.data = response.data
           this.currentPage = response.data.current_page
           this.lastPage = response.data.last_page
@@ -65,7 +61,8 @@ export default {
         })
       },
     search(value){
-      this.fetchResidents(1,value)
+        this.currentPage = 1
+      this.fetchResidents(this.currentPage,value)
     }
   },
 

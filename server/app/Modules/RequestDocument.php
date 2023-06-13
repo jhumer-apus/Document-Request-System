@@ -271,6 +271,7 @@ class RequestDocument{
         $remove_files = json_decode($payload->remove_files);
         $supporting_document = $payload->supporting_document;
         $status = $payload->status;
+        $documen_name = $payload->document_name;
 
         DB::beginTransaction();
 
@@ -328,8 +329,30 @@ class RequestDocument{
         if($remove_id && $isOldIdExist){
             Storage::delete('public/valid_ids/'.$remove_id->filename);
         }
+        if($status == 'rejected'){
+            $this->createReports($request_id, $status, $document_name);
+        }
+
         DB::commit();
         return response()->json(['message'=>'update request succesfully']);
+    }
+    public function createReports($id, $status, $document_name){
+        $charID = (string) $id;
+        if(strlen($charID) < 6){
+            $zerosToAdd = 6 - strlen($charID);
+            $strId = '';
+
+            for($i = 0; $i < $zerosToAdd; $i++){
+                $strId .= '0'; 
+            }
+            $strId = $strId.$charID;
+        }
+        $user= Auth::user();
+        Reports::create([
+            'message' =>'Request '.$strId.' '.$document_name.' was '.$status. ' by',
+            'name' => $user->first_name.' '.$user->last_name,
+            'status' => $status     
+        ]);
     }
 }
 

@@ -39,32 +39,38 @@
                 </div><br>
                 <h2>Valid ID</h2>
                 <div class="doc-container">
-                    <div v-if="details.id_type=='image'" class="doc-wrapper">
+                    <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
-                            <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+                            
+                            <div v-if="details.id_type=='image/jpg' || details.id_type.split('/')[0] =='image'">
+                                <font-awesome-icon :icon="['fas', 'image']" class="text-blue-500 icon" />
+                            </div>
+                            <div  v-if="details.id_type=='application/pdf' || details.id_type.split('/')[1] =='pdf'">
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" class="text-purple-500 icon" />
+                            </div>
+
                             <p class="font-semibold">{{details.id_name}}</p>
                         </div>
-                        <button class="view-file" @click="showImage(details.id_path)">View</button>
+                        <button class="view-file" @click="showFile(details.id_path, details.id_type)">View</button>
                     </div>
                     
                     <div v-if="details.id_type=='pdf'"></div>
                 </div><br>
                 <h2>Supporting Documents</h2>
                 <div class="doc-container" v-for="document in details.request_supporting_dcouments" :key="document.id">
-                    <div v-if="document.type=='image'" class="doc-wrapper">
+                    <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
-                            <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+
+                            <div v-if="document.type=='image/jpg' || document.type.split('/')[0] =='image'">
+                                <font-awesome-icon :icon="['fas', 'image']" class="text-blue-500 icon" />
+                            </div>
+                            <div  v-if="document.type=='application/pdf' || document.type.split('/')[1] =='pdf'">
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" class="text-purple-500 icon" />
+                            </div>
+
                             <p class="font-semibold">{{document.original_name}}</p>
                         </div>
-                        <button class="view-file" @click="showImage(document.path)">View</button>
-                    </div>
-                    
-                    <div v-if="document.type=='pdf'" class="doc-wrapper">
-                        <div class="flex items-center space-x-4 w-fit">
-                            <font-awesome-icon :icon="['fas', 'file-pdf']" style="color: #880bcb;" />
-                            <p class="font-semibold">{{document.original_name}}</p>
-                        </div>
-                        <button class="view-file" @click="viewFile(document.filename)">View</button>
+                        <button class="view-file" @click="showFile(document.path, document.type)">View</button>
                     </div>
                 </div>
             </div>
@@ -104,7 +110,6 @@ export default {
         return{
             data:[],
             viewImage:false,
-            currentPath:'',
             comment:'',
             spinning:false,
         }
@@ -131,20 +136,19 @@ export default {
                 this.spinning =false
             })
         },
-        async viewFile(filename){
-            await this.$axios.get('/admin/request/get-pdf/'+filename,{responseType: 'blob'}).then(response=>{
-                const blob = new Blob([response.data],{type: "application/pdf"})
+        async showFile(path,type){
+            this.spinning = true
+            var params={
+                path:path
+            }
+            await this.$axios.get('/admin/request/get-file',{responseType: 'blob', params:params}).then(response=>{
+                const blob = new Blob([response.data],{type: type})
                 const objectUrl = window.URL.createObjectURL(blob)
                 window.open(objectUrl);
+                this.spinning = false
             })
         },
-        showImage(path){
-            this.currentPath = path
-            this.viewImage = true
-
-        },
         renderID(id){
-            console.log(id)
             const charID = id.toString()
             if(charID.length<6){
                 const zerosToAdd = 6 - charID.length
@@ -206,5 +210,7 @@ h2{
 .status-wrapper{
     @apply flex items-center space-x-4 w-fit m-auto
 }
-
+.icon{
+    font-size:30px;
+}
 </style>

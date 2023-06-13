@@ -85,7 +85,7 @@ class AdminRequestDocument{
 
     public function getFile($payload){
         $path = $payload->path;
-        return Storage::get($path);
+        return Storage::get('public/'.$path);
     }
 
     public function countRequest(){

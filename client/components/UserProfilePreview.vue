@@ -75,6 +75,7 @@ export default {
             }else{
                 this.defaultPath = "Female_Icon.png"
           }
+          console.log(this.profilePicPath)
           let imgUrl = this.profilePicPath? this.profilePicPath: require("~/assets/images/"+this.defaultPath)
         return imgUrl
       }

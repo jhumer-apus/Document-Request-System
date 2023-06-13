@@ -45,10 +45,10 @@
                     <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
                             <div v-if="details.id_type=='image'" >
-                                <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+                                <font-awesome-icon :icon="['fas', 'image']" class="text-sky-400 text-2xl" />
                             </div>
                             <div v-if="details.id_type=='pdf'" >
-                                <font-awesome-icon :icon="['fas', 'file-pdf']" style="color: #880bcb;" />
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" style="text-blue-800 text-2xl" />
                             </div>
                             <p class="font-semibold">{{reupload_id.name?reupload_id.name:details.id_name}}</p>
                         </div>
@@ -240,19 +240,18 @@ export default {
         // },  
         async showFile(path, type, document){
             this.spinning = true
-            let fileType = type == 'pdf'? "application/pdf": "image/jpg"
             if(path){
                 var params ={
                     path:path
                 }
                 await this.$axios.get('/user/request/get-file',{responseType: 'blob', params:params}).then(response=>{
-                    const blob = new Blob([response.data],{type: fileType})
+                    const blob = new Blob([response.data],{type: type})
                     const objectUrl = window.URL.createObjectURL(blob)
                     window.open(objectUrl);
                     this.spinning = false
                 })
             }else{
-                    const blob = new Blob([document],{type: fileType})
+                    const blob = new Blob([document],{type: type})
                     const objectUrl = window.URL.createObjectURL(blob)
                     window.open(objectUrl);
                     this.spinning = false
@@ -264,9 +263,8 @@ export default {
                 // },  
         async showValidID(path, type, newID){
             this.spinning = true
-            let fileType = type == 'pdf'? "application/pdf": "image/jpg"
             if(newID){
-                    const blob = new Blob([newID],{type: fileType})
+                    const blob = new Blob([newID],{type: type})
                     const objectUrl = window.URL.createObjectURL(blob)
                     window.open(objectUrl);
                     this.spinning = false
@@ -276,7 +274,7 @@ export default {
                     path:path
                 }
                 await this.$axios.get('/user/request/get-file',{responseType: 'blob' ,params:params}).then(response=>{
-                    const blob = new Blob([response.data],{type: fileType})
+                    const blob = new Blob([response.data],{type:type})
                     const objectUrl = window.URL.createObjectURL(blob)
                     window.open(objectUrl);
                     this.spinning = false

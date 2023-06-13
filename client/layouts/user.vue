@@ -17,7 +17,7 @@ export default {
         updateRequired:false
       }
     },
-    mounted(){
+    created(){
       this.getUserData()
     },
     methods:{

@@ -130,9 +130,9 @@ class RequestDocument{
         $extension = strtolower($extension);
 
         if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif'){
-            $file_type = 'image';
+            $file_type = 'image/jpg';
         }else if($extension == 'pdf'){
-            $file_type = 'pdf';
+            $file_type = 'application/pdf';
         }else{
             $file_type = 'others';
         }
@@ -153,9 +153,9 @@ class RequestDocument{
         $extension = strtolower($extension);
 
         if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif'){
-            $file_type = 'image';
+            $file_type = 'image/jpg';
         }else if($extension == 'pdf'){
-            $file_type = 'pdf';
+            $file_type = 'application/pdf';
         }else{
             $file_type = 'others';
         }

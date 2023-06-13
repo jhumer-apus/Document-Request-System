@@ -25,10 +25,14 @@ export default {
     },
     methods:{
         async getProfilePicture(){
-            await this.$axios.get('/user/profile-pic').then(response=>{
-                    this.profilePicPath = response.data.path
+            await this.$axios.get('/user/profile-pic',{responseType: 'blob'}).then(response=>{
+                const blob = new Blob([response.data],{type: "image/jpg"})
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                this.profilePicPath = e.target.result
                 }
-            )
+                reader.readAsDataURL(blob)
+            })
         },
         getImgUrl(){
             if(this.$auth.$state.user.sex == 'male'){
@@ -36,7 +40,7 @@ export default {
             }else{
                 this.defaultPath = "Female_Icon.png"
             }
-            const imgUrl = this.profilePicPath? require("../../server/storage/app/public/"+this.profilePicPath): require("~/assets/images/"+this.defaultPath)
+            let imgUrl = this.profilePicPath? this.profilePicPath: require("~/assets/images/"+this.defaultPath)
         return imgUrl
       }
     }

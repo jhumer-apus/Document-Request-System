@@ -16,6 +16,7 @@ use App\Http\Traits\GenerateCodeTrait;
 use App\Http\Resources\UserResource;
 use App\Mail\SignUp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Admins
 {
@@ -275,7 +276,10 @@ class Admins
     }
     public function getProfilePic(){
         $getUserProfile = AdminProfilePicture::where('admin_id', Auth::user()->id)->first();
-        return response()->json($getUserProfile);
+        if($getUserProfile){
+            return Storage::get('public/profile_pic/'.$getUserProfile->filename);
+        }
+        return response();
     }
     public function changePassword($payload){
 

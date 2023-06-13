@@ -130,9 +130,9 @@ class RequestDocument{
         $extension = strtolower($extension);
 
         if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif'){
-            $file_type = 'image';
+            $file_type = 'image/jpg';
         }else if($extension == 'pdf'){
-            $file_type = 'pdf';
+            $file_type = 'application/pdf';
         }else{
             $file_type = 'others';
         }
@@ -153,9 +153,9 @@ class RequestDocument{
         $extension = strtolower($extension);
 
         if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'gif'){
-            $file_type = 'image';
+            $file_type = 'image/jpg';
         }else if($extension == 'pdf'){
-            $file_type = 'pdf';
+            $file_type = 'application/pdf';
         }else{
             $file_type = 'others';
         }
@@ -257,8 +257,10 @@ class RequestDocument{
         return response()->json($requestDetails);
 
     }
-    public function getPDF($filename){
-        return Storage::get('public/supporting_documents/'.$filename);
+    public function getFile($payload){
+        $path = $payload->path;
+        Log::info($path);
+        return Storage::get('public/'.$path);
     }
     public function updateRequest($payload){
         $request_id = $payload->request_id;

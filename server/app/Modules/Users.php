@@ -16,6 +16,7 @@ use App\Http\Traits\GenerateCodeTrait;
 use App\Http\Resources\UserResource;
 use App\Mail\SignUp;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Users
 {
@@ -287,7 +288,10 @@ class Users
     }
     public function getProfilePic(){
         $getUserProfile = UserProfilePicture::where('user_id', Auth::user()->id)->first();
-        return response()->json($getUserProfile);
+        if($getUserProfile){
+            return Storage::get('public/profile_pic/'.$getUserProfile->filename);
+        }
+        return response();
     }
     public function changePassword($payload){
 

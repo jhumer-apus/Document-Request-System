@@ -83,8 +83,9 @@ class AdminRequestDocument{
         return response()->json($requestDetails);
     }
 
-    public function getPDF($filename){
-        return Storage::get('public/supporting_documents/'.$filename);
+    public function getFile($payload){
+        $path = $payload->path;
+        return Storage::get($path);
     }
 
     public function countRequest(){

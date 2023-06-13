@@ -44,16 +44,16 @@
                 <div class="doc-container">
                     <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
-                            <div v-if="details.id_type=='image'" >
-                                <font-awesome-icon :icon="['fas', 'image']" class="text-sky-400 text-2xl" />
+                            <div v-if="valid_id && (valid_id.type=='image/jpg' || valid_id.type.split('/')[0] =='image')">
+                                <font-awesome-icon :icon="['fas', 'image']" class="text-blue-500 icon" />
                             </div>
-                            <div v-if="details.id_type=='pdf'" >
-                                <font-awesome-icon :icon="['fas', 'file-pdf']" style="text-blue-800 text-2xl" />
+                            <div v-if="valid_id && (valid_id.type=='application/pdf' || valid_id.type.split('/')[0] =='pdf')" >
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" class="text-purple-500 icon" />
                             </div>
-                            <p class="font-semibold">{{reupload_id.name?reupload_id.name:details.id_name}}</p>
+                            <p class="font-semibold">{{valid_id.name}}</p>
                         </div>
                         <div>
-                            <button class="view-file" @click="showValidID(details.id_path, details.id_type,reupload_id)">View</button>
+                            <button class="view-file" @click="showValidID(valid_id.path, valid_id.type,valid_id)">View</button>
                             <label for="reupload" class="reupload">
                                 Reupload
                                 <input type="file" id="reupload" accept="application/pdf, image/jpg, image/png, image/jpeg" v-on:change="reupload" hidden> 
@@ -72,11 +72,11 @@
                     <div  class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
 
-                            <div v-if="document.type=='image' || document.type.split('/')[0] =='image'">
-                                <font-awesome-icon :icon="['fas', 'image']" style="color: #dd5a03;" />
+                            <div v-if="document.type=='image/jpg' || document.type.split('/')[0] =='image'">
+                                <font-awesome-icon :icon="['fas', 'image']" class="text-blue-500 icon" />
                             </div>
-                            <div  v-if="document.type=='pdf' || document.type.split('/')[1] =='pdf'">
-                                <font-awesome-icon :icon="['fas', 'file-pdf']" style="color: #880bcb;" />
+                            <div  v-if="document.type=='application/pdf' || document.type.split('/')[1] =='pdf'">
+                                <font-awesome-icon :icon="['fas', 'file-pdf']" class="text-purple-500 icon" />
                             </div>
 
                             <p class="font-semibold">{{document.original_name?document.original_name:document.name}}</p>
@@ -105,7 +105,7 @@
         </div>
     </div>
     <ConfirmationModal message="Are you sure you want to update your request?" @close="confirmModal = false" @yes="updateRequest" v-if="confirmModal" />
-    <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false" :reupload="isReupload"/>
+    <!-- <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false" :reupload="isReupload"/> -->
     <ReschedModal v-if="reschedModal" @close="reschedModal = false" @selectedDate="selectedDate"/>
     <Spin v-if="spinning"/>
   </div>
@@ -128,13 +128,12 @@ export default {
             meridiem:'',
             document_id:'',
             documents:'',
-            reupload_id:'',
-            reupload_id_path:'',
             isReupload:false,
             remove_id:'',
             supporting_documents:[],
             remove_files:[],
             confirmModal:false,
+            valid_id:"",
 
         }
     },
@@ -145,6 +144,12 @@ export default {
         this.document_id = this.details.document_id
         this.supporting_documents = this.details.request_supporting_dcouments
 
+        this.valid_id={
+            name: this.details.id_name,
+            type: this.details.id_type,
+            path: this.details.id_path
+        }
+
         this.getDocuments()
 
         this.$store.commit('request/updateFormData', {
@@ -154,14 +159,13 @@ export default {
     },
     methods:{
         reupload(e){
-            this.reupload_id = e.target.files[0];
-            console.log(this.reupload_id)
+            this.valid_id = e.target.files[0];
 
-            if(this.reupload_id){
+            if(this.valid_id){
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     this.isReupload = true
-                    this.reupload_id_path = e.target.result
+                    this.valid_id.path= e.target.result
 
                     this.remove_id = {
                         id:this.details.id_id,
@@ -169,7 +173,7 @@ export default {
 
                     }
                 };
-                reader.readAsDataURL(this.reupload_id);
+                reader.readAsDataURL(this.valid_id);
             }
         },
         addFiles(e){
@@ -212,7 +216,7 @@ export default {
             formData.append('schedule', this.date)
             formData.append('meridiem', this.meridiem)
             formData.append('purpose', this.purpose)
-            formData.append("valid_id", this.reupload_id);
+            formData.append("valid_id", this.valid_id);
             formData.append('remove_id', JSON.stringify(this.remove_id))
             formData.append('remove_files', JSON.stringify(this.remove_files))
             formData.append('status', this.details.status)
@@ -263,23 +267,23 @@ export default {
                 // },  
         async showValidID(path, type, newID){
             this.spinning = true
-            if(newID){
-                    const blob = new Blob([newID],{type: type})
-                    const objectUrl = window.URL.createObjectURL(blob)
-                    window.open(objectUrl);
-                    this.spinning = false
-                
-            }else{
+            console.log(path)
+
                 var params ={
                     path:path
                 }
+                
                 await this.$axios.get('/user/request/get-file',{responseType: 'blob' ,params:params}).then(response=>{
                     const blob = new Blob([response.data],{type:type})
                     const objectUrl = window.URL.createObjectURL(blob)
                     window.open(objectUrl);
                     this.spinning = false
+                }).catch(err=>{
+                    const blob = new Blob([newID],{type: type})
+                    const objectUrl = window.URL.createObjectURL(blob)
+                    window.open(objectUrl);
+                    this.spinning = false
                 })
-            }
 
             // this.currentPath = this.reupload_id_path?this.reupload_id_path:path
             // this.viewImage = true
@@ -357,6 +361,9 @@ h2{
 }
 .reupload{
     @apply py-2 px-4 rounded-md bg-slate-200 text-black cursor-pointer
+}
+.icon{
+    font-size:30px;
 }
 
 

@@ -61,12 +61,14 @@ export default {
       },
       async getProfilePicture(){
         await this.$axios.get('/user/profile-pic',{responseType: 'blob'}).then(response=>{
+
             const blob = new Blob([response.data],{type: "image/jpg"})
             const reader = new FileReader();
             reader.onload = (e) => {
               this.profilePicPath = e.target.result
             }
             reader.readAsDataURL(blob)
+          
         })
       },
       getImgUrl(){

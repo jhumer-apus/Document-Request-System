@@ -279,7 +279,7 @@ class Admins
         if($getUserProfile){
             return Storage::get('public/profile_pic/'.$getUserProfile->filename);
         }
-        return response()->json(null);
+        return response();
     }
     public function changePassword($payload){
 

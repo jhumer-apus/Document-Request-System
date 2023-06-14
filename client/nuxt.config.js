@@ -1,10 +1,6 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-
-  server: {
-    host: process.env.APP_URL, // default: localhost
-  },
-
+  target: "static",
   head: {
     title: "eDokumento",
     htmlAttrs: {

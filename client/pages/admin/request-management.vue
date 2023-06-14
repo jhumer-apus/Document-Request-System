@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <h1>Request Management</h1>
+    <h1>Request Management</h1><br>
     <Search 
       @search="search" 
       :selected="$store.state.request_history.status?$store.state.request_history.status:'pending'" 

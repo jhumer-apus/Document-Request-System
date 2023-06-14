@@ -22,7 +22,7 @@
     </div>
     <RequestModal :details="details" v-if="showRequestModal" @closeModal="showRequestModal = false"/>
     <ApprovedModal :details="details" v-if="showApprovedModal" @closeModal="closeApproveModal" @viewDocument="generatePDF"/>
-    <div id="content">
+    <div id="content" v-if="showApprovedModal">
         <BarangayPermit v-if="doc_id == 2" :user="user"/>
         <BarangayClearance v-if="doc_id == 3" :user="user"/>
         <BarangayClearanceBusiness v-if="doc_id == 4" :user="user"/>

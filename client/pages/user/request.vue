@@ -6,7 +6,7 @@
         <ReviewRequest v-if="page==4"/>
         <RequestSaveSuccessful v-if="page==5"/>
         <div class="m-auto mt-4 space-x-4 w-fit">
-            <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page==1">Cancel</button>
+            <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page==1" @click="$router.push('/user/dashboard')">Cancel</button>
             <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page>1 && page<=4" @click="page--">Back</button>
             <button class="bg-yellow-400 text-white px-20 py-2 rounded-lg" v-if="page<4" @click="nextPage" >Next</button>
             <button class="bg-yellow-400 text-white px-20 py-2 rounded-lg" v-if="page==4" @click="submitRequest">Save</button>

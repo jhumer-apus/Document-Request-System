@@ -3,7 +3,7 @@ export const state = () => ({
   validIDName: "",
   supportingDocumentsName: [],
   form: "",
-  selectedDocument: " ",
+  selectedDocument: "",
   selectedDate: "",
   meridem: "",
   purpose: "",

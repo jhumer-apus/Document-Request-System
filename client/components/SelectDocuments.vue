@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-20 px-20 pb-8">
+    <div class="px-20 pb-8">
         <h1>Select type of document you would like to request</h1>
         <p>You can choose more than one document request at a time</p><br>
         <div class="rounded-2xl bg-white py-8 px-16">

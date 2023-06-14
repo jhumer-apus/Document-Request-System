@@ -82,13 +82,13 @@
         <h2>Comments/Remarks</h2>
         <textarea rows="4" v-model="comment"></textarea>
         <div class="w-fit m-auto flex text-white space-x-4 mt-10">
-            <button class="bg-red-500 status-button" @click="submit('rejected', details.request_number)">
+            <button class="bg-red-500 status-button" @click="submit('rejected', details.request_number, details.document_name)">
                 <div class="status-wrapper">
                     <font-awesome-icon :icon="['fas', 'thumbs-down']" flip="horizontal" class="thumbs-icon"/>
                     <p>Reject</p>
                 </div>
             </button>
-            <button class="bg-green-500 status-button" @click="submit('approved', details.request_number)">
+            <button class="bg-green-500 status-button" @click="submit('approved', details.request_number, details.document_name)">
                 <div class="status-wrapper">
                     <font-awesome-icon :icon="['fas', 'thumbs-up']" class="thumbs-icon"/>
                     <p>Approve</p>
@@ -118,12 +118,13 @@ export default {
 
     },
     methods:{
-        async submit(status,request_number){
+        async submit(status,request_number, document_name){
             this.spinning =true
             var params = {
                 id: this.details.id,
                 status: status,
                 comment:this.comment,
+                document: document_name
 
             }
             await this.$axios.put('/admin/request/update-status',params).then(response=>{

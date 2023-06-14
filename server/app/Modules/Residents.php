@@ -3,11 +3,16 @@
 namespace App\Modules;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class Residents
 {
-    public function getAllResidents($filter){
+    public function getAllResidents($payload){
+        $search = $payload->search;
+        $sex = $payload->sex;
+        $civilStatus = $payload->civilStatus;
         $user = User::select(
+            'id',
             'first_name',
             'middle_name',
             'last_name',
@@ -19,7 +24,14 @@ class Residents
             'barangay',
             'municipality',
             'province'
-        )->get();
+        )->where("users.email_verified_at","!=",null)
+        ->when(!empty($search), function ($query) use($search){
+            return $query->where(DB::raw('CONCAT(users.first_name, " ", users.last_name)'), 'LIKE', $search . '%');
+        })->when(!empty($sex), function ($query) use($sex){
+            return $query->whereIn("users.sex", $sex);
+        })->when(!empty($civilStatus), function ($query) use($civilStatus){
+            return $query->whereIn("users.civil_status", $civilStatus);
+        })->paginate(10);
         return response()->json($user);
     }
     

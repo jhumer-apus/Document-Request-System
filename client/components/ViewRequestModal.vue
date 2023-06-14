@@ -219,6 +219,7 @@ export default {
             formData.append('remove_id', JSON.stringify(this.remove_id))
             formData.append('remove_files', JSON.stringify(this.remove_files))
             formData.append('status', this.details.status)
+            formData.append('document_name', this.details.document_name)
             for (let i = 0; i < this.supporting_documents.length; i++) {
                 formData.append(
                     "supporting_document[" + i + "]",
@@ -255,7 +256,6 @@ export default {
         },
         async showValidID(path, type, newID){
             this.spinning = true
-            console.log(path)
 
                 var params ={
                     path:path

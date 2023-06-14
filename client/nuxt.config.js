@@ -5,6 +5,7 @@ export default {
     host: process.env.APP_URL, // default: localhost
   },
 
+  target: "static",
   head: {
     title: "eDokumento",
     htmlAttrs: {

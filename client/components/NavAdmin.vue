@@ -29,8 +29,6 @@ export default {
     },
     mounted(){
         this.getProfilePicture()
-        console.log('hi')
-        console.log(this.$auth.state)
     },
     methods: {
         async logout() {

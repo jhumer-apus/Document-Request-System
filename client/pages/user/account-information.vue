@@ -33,7 +33,7 @@
             <h2 class="col-span-2">Address</h2>
             <h2>ZIP Code</h2>
             <label><input type="text" v-model="data.purok">Purok</label>
-            <label><input type="text" v-model="data.barangay">barangay</label>
+            <label><input type="text" v-model="data.barangay">Barangay</label>
             <label><input class="end-row" type="text" v-model="data.zip_code"></label>
             <label><input type="text" v-model="data.municipality">Municipality</label>
             <label class="end-row"><input type="text" v-model="data.province">Province</label><br>
@@ -48,12 +48,6 @@
             <label><input type="text" v-model="data.fathers_lastname" required>Last Name</label>
             <label><input type="text" v-model="data.fathers_firstname" required>First Name</label>
             <label class="end-row" ><input type="text" v-model="data.fathers_middlename" required>Middle Name</label>
-            <!-- <h2 class="col-span-3">Password</h2>
-            <label><input type="password" v-model="newPassword" min="8">New Password</label>
-            <div class="flex">
-                <label><input type="password" v-model="confirmNewPassword" min="8">Retype New Password</label>
-                <span class="error">{{errorPass}}</span>
-            </div> -->
             
         </div><br>
         <div class="formButtonContainer">
@@ -81,15 +75,7 @@ export default {
     mounted(){
         this.getUserData()
     },
-    // watch:{
-    //     confirmNewPassword(){
-    //         if(this.newPassword != this.confirmNewPassword){
-    //             this.errorPass = "Inconsistent password!"
-    //         }else{
-    //             this.errorPass = ""
-    //         }
-    //     }
-    // },
+
     methods:{
         async getUserData(){
             this.spinning = true
@@ -105,11 +91,6 @@ export default {
         save(){
             this.updateUserModal = true
             
-            // if(this.newPassword != this.confirmNewPassword){
-            //     this.errorPass = "Inconsistent password!"
-            // }else{
-            //     this.errorPass=""   
-            // }
         }
     }
 }

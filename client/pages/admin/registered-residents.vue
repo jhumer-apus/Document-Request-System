@@ -1,12 +1,12 @@
 <template>
   <div class="main-container">
     <h1>Register Residents</h1>
-    <Search 
-      @search="search" 
-      :selected="$route.params.index" 
-      :options="options" 
-      placeholder="Search Residents"
-    />
+    <SearchOnly
+      @search="search"
+      @changeSearch="changeSearch"
+      placeholder="Search name(first name last name)"
+    /><br>
+    <FilterResidents @filter="filter" @changeValue="changeValue"/>
     <RegisterResidentsTable :data="data"/>
     <Pagination 
       :currentPage="currentPage"
@@ -27,16 +27,15 @@ export default {
         currentPage: 1,
         lastPage:1,
         spinning:false,
-        options:['all','completed','approved','processing','pending','rejected'],
+        searchName:"",
+        filterSex:[],
+        filterCivilStatus:[]
       }
     },
     mounted(){
       this.fetchResidents(this.currentPage)
     },
     methods:{
-      newRequest(){
-
-      },
       paginate(value){
         switch(value){
           case "prev":
@@ -48,15 +47,18 @@ export default {
           default:
             var pageNumber = this.currentPage
         }
-        this.fetchResidents(pageNumber,null)
+        this.fetchResidents(pageNumber)
       },
-      async fetchResidents(pageNumber,search){
+      async fetchResidents(pageNumber){
         this.spinning = true
         var params = {
-          search:search
+          search:this.searchName,
+          sex:this.filterSex,
+          civilStatus: this.filterCivilStatus
+
         }
-        await this.$axios.get('/admin/residents/get-all-residents/'+this.$route.params.index+'?page=' + pageNumber, {params}).then(response=>{
-          this.data = response.data
+        await this.$axios.get('/admin/residents/get-all-residents?page=' + pageNumber, {params}).then(response=>{
+          this.data = response.data.data
           this.currentPage = response.data.current_page
           this.lastPage = response.data.last_page
           this.spinning = false
@@ -64,8 +66,24 @@ export default {
           this.spinning = false
         })
       },
+    filter(value){
+      this.filterSex = value.sex
+      this.filterCivilStatus = value.civilStatus
+      this.currentPage = 1
+      this.fetchResidents(this.currentPage)
+
+    },
     search(value){
-      this.fetchResidents(1,value)
+      this.searchName = value
+      this.currentPage = 1
+      this.fetchResidents(this.currentPage)
+    },
+    changeSearch(value){
+      this.searchName = value
+    },
+    changeValue(value){
+        this.filterSex = value.sex
+        this.filterCivilStatus = value.civilStatus
     }
   },
 

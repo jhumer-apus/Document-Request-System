@@ -10,7 +10,7 @@
             </div>
             <span class="text-3xl font-bold">{{countResidents}}</span>
         </div>
-        <div class="mt-8 border-t border-slate-300 p-4 h-fit cursor-pointer" @click="$router.push('/admin/registered-residents/all')">
+        <div class="mt-8 border-t border-slate-300 p-4 h-fit cursor-pointer" @click="$router.push('/admin/registered-residents')">
             <p class="text-center text-blue-500 font-semibold text-xl">See All</p>
         </div>
 

@@ -2,7 +2,7 @@
     <div class="registration-container">
         <img src="~assets/images/Asset 13.png" width="200" height="200" class="m-auto"/><br>
             <form @submit.prevent="submitFirstForm" v-if="firstForm">
-                <p class="text-center">Step 1 of 2</p><br>
+                <p class="text-center">Step 1 of 3</p><br>
                 <h2>Sign up for an Account</h2><br>
                 <input type="text" id="firstname" name="firstname" v-model="data.first_name" placeholder="First Name" required><br><br>
                 <input type="text" id="middlename" name="middlename" v-model="data.middle_name" placeholder="Middle Name" required><br><br>
@@ -27,8 +27,10 @@
                     <button class="next-button">Next</button>
                 </div> 
             </form><br>
+
+
             <form @submit.prevent="submitSecondForm" v-if="secondForm">
-                <p class="text-center">Step 2 of 2</p><br>
+                <p class="text-center">Step 2 of 3</p><br>
                 <h2>Sign up for an Account</h2><br>
                 <label>Mother's Maiden Name</label>
                 <div class="input-container">
@@ -45,31 +47,47 @@
                 <input type="tel" id="phone_number" name="phone_number" v-model="data.mobile_number" placeholder="Mobile Number (09XXXXXXXXX)" min="11" pattern="[0-9]{11}" required><br><br>
                 <input type="email" id="email" name="email" v-model="data.email" placeholder="Email Address" required>
                 <p class="error">{{errorEmail}}</p><br>
+                <label>Password(8 characters minimum)</label>
                 <div class="input-container">
                     <div class="password-container">
-                        <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="data.password" placeholder="Enter Password" min="8" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showPassword = !showPassword"/>
+                        <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="data.password" placeholder="Enter Password" minlength="8" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showPassword = !showPassword"/>
                     </div><br><br>
                     <div class="password-container" >
-                        <input class="border-none" :type="confirmPasswordFieldType" id="confirm_password" v-model="confirmPassword" name="confirm_password" min="8" placeholder="Confirm Password" required><font-awesome-icon :icon="['fas', confirmEyeIconType]" class="eyeIcon" @click="showConfirmPassword = !showConfirmPassword"/>
+                        <input class="border-none" :type="confirmPasswordFieldType" id="confirm_password" v-model="confirmPassword" name="confirm_password" minlength="8" placeholder="Confirm Password" required><font-awesome-icon :icon="['fas', confirmEyeIconType]" class="eyeIcon" @click="showConfirmPassword = !showConfirmPassword"/>
                     </div>
                 </div>
                 <span class="h-16">
                     <p class="error">{{error}}</p>
                 </span><br>
+                <div class="button-wrapper text-center">
+                    <button class="next-button">Next</button>
+                </div>
+            </form><br>
+
+            <form @submit.prevent="submitThirdForm" v-if="thirdForm">
+                <p class="text-center">Step 3 of 3</p><br>
+                <h2>Sign up for an Account</h2><br>
+                <p>Please check your email address and verify your code</p><br>
+                <input type="text" class="text-center" placeholder="Enter your code" v-model="code" required>
+                <p class="error">{{error}}</p><br>
+                <p class="text-center">Haven't recieve an email? <span class="text-blue-500 font-semibold cursor-pointer" @click="resendEmail">Resend Email</span></p><br><br>
                 <label class="flex space-x-2 w-fit m-auto items-center">
                     <input type="checkbox" class="w-fit" required/>
                     <p>I HAVE READ and ACCEPT <span class="text-blue-500">TERMS OF SERVICES</span></p>
                 </label>
                 <div class="button-wrapper text-center">
-                    <button class="next-button">Next</button>
+                    <button class="next-button">Verify Code</button>
                 </div>
-            </form><br>
+
+                
+            </form>
             <div v-if="isAccountCreated" class="w-fit m-auto">
                 <div class="messageContainer">
                     <h2>Account created successfully!</h2>
                 </div><br>
-                <p class="text-center text-base">Please check your email for verification</p>
-                <p class="text-center text-base">Haven't receive an email? <span class="text-blue-300 font-semibold cursor-pointer" @click="resendEmail">Resend Email</span></p>
+                <div class="w-fit m-auto">
+                    <NuxtLink to="/" class="text-center">Go to login page</NuxtLink>
+                </div>
             </div>
             <Spin v-if="spinning"/>
     </div>
@@ -81,6 +99,8 @@ export default {
     data(){
         return{
             spinning:false,
+            code:'',
+            tempCode:'',
             passwordFieldType:"password",
             confirmPasswordFieldType:"password",
             eyeIconType:"eye-slash",
@@ -93,6 +113,7 @@ export default {
             isAccountCreated:false,
             firstForm:true,
             secondForm:false,
+            thirdForm:false,
             data:{
                 first_name:'',
                 middle_name:'',
@@ -172,40 +193,67 @@ export default {
         submitSecondForm(){
             //check email if its already existing
             this.spinning=true
-            var params = {
-                email: this.data.email
-            }
             if(this.data.password != this.confirmPassword){
                 this.error = "Inconsistent password!"
-                this.isAccountCreated = false
-            }
-            else{
+                // this.isAccountCreated = false
+            }else{
+                this.getCode();
                 this.error = ""
+            }
+            // else{
+            //     this.error = ""
+            //     let params = this.data
+            //     this.$axios.post('/user/store', params).then(response =>{
+            //         this.secondForm = false
+            //         this.isAccountCreated = true
+            //         this.spinning=false
+            //     }).catch(err=>{
+            //         if(err.response.data.isEmailExist){
+            //             this.errorEmail = "This email is already taken."
+            //         }
+            //             this.isAccountCreated = false
+            //             this.spinning=false
+            //     })
+            // }
+            
+        },
+        async submitThirdForm(){
+            this.spinning = true
+            if(this.tempCode == this.code){
                 let params = this.data
-                this.$axios.post('/user/store', params).then(response =>{
-                    this.secondForm = false
+                await this.$axios.post('/user/store', params).then(response =>{
+                    this.thirdForm = false
                     this.isAccountCreated = true
                     this.spinning=false
                 }).catch(err=>{
-                    if(err.response.data.isEmailExist){
-                        this.errorEmail = "This email is already taken."
-                    }
-                        this.isAccountCreated = false
-                        this.spinning=false
+                    this.error = "Something went wrong"
+                    this.spinning=false
                 })
             }
-            
+            else{
+                this.error = "Wrong Code"
+                this.spinning=false
+            }
+
         },
-        async resendEmail(){
+        async getCode(){
             this.spinning = true
             var params = {
                 email: this.data.email
             }
-            await this.$axios.post('/user/resend-email', params).then(response =>{
-                this.spinning = false
-            }).catch(err=>{
+            await this.$axios.get('/user/send-email-code',{params}).then(response=>{
+                if(response.data.isEmailExist){
+                    this.errorEmail = "This email is already taken."
+                }else{
+                    this.tempCode = response.data.code
+                    this.secondForm = false
+                    this.thirdForm = true
+                }
                 this.spinning = false
             })
+        },
+        async resendEmail(){
+            this.getCode()
         }
         
     }

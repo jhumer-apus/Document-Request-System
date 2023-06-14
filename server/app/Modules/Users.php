@@ -73,9 +73,6 @@ class Users
         if($validator->fails()){
             return response(["message" => $validator->errors()],500);
         }
-        if($this->checkEmail($payload->email)){
-            return response(['isEmailExist'=>true],500);
-        };
 
         $data = array(
             'email' => $payload->email,
@@ -92,6 +89,7 @@ class Users
             'fathers_firstname' => $payload->fathers_firstname,
             'fathers_middlename' => $payload->fathers_middlename,
             'fathers_lastname' => $payload->fathers_lastname,
+            'email_verified_at' => now(),
             'password' => bcrypt($payload->password),
         );
 
@@ -99,27 +97,13 @@ class Users
 
         $userTransaction = User::create($data);
 
-        //generate code for verification
-        $emailCode = $this->generateCode(). $userTransaction->id;
-        $storeCodeTransaction = User::where('id', $userTransaction->id)->update(['email_code'=> $emailCode]);
-
-
-        if(!$userTransaction || !$storeCodeTransaction){
+        if(!$userTransaction){
            DB::rollback();
            return response([
             'message' => 'Something went wrong'
            ],500);
         }
         DB::commit();
-        
-        //send verification email
-        $url = env('FRONTEND_URL').'/verify-account/'.$emailCode;
-
-        $details = (object) array(
-            'email' => $payload->email,
-            'class' => new SignUp($url)
-        );
-        SendEmail::dispatch($details);
 
         return response()->json(["message"=>"user created successfully", 'isAccountCreated' => true]);
     }
@@ -314,6 +298,29 @@ class Users
             ],500);
         }
         return response()->json(['message'=>'Updated password successfully']);
+    }
+    public function sendEmailCode($payload){
+        $email = $payload->email;
+        $isEmailExist = $this->checkEmail($email);
+        if($isEmailExist){
+            return response()->json(["isEmailExist" => true]);
+        }
+        $code = $this->generateCode();
+
+        //send verification email
+        $details = (object) array(
+            'email' => $email,
+            'class' => new SignUp($code)
+        );
+        SendEmail::dispatch($details);
+
+        return response()->json([
+            "isEmailExist" => false,
+            "code" => $code
+        ]);
+
+
+
     }
 
 }

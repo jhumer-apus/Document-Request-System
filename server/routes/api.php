@@ -97,6 +97,7 @@ Route::post('/stored', function(){
 Route::prefix('user')->group(function(){
     Route::post('/store', [UserController::class, 'store']);
     Route::post('/resend-email', [UserController::class, 'resendEmail']);
+    Route::get('/send-email-code',[UserController::class, 'sendEmailCode']);
     Route::get('/check-email',[UserController::class, 'checkEmail']);
     Route::get('/send-code', [UserController::class, 'sendCode']);
     Route::put('verify-account', [UserController::class, 'verify']);

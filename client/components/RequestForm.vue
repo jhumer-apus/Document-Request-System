@@ -1,5 +1,5 @@
 <template>
-    <div class="md:pt-20 md:px-20 md:pb-4">
+    <div class="md:px-20 md:pb-4">
         <h1>Complete the Request Form</h1>
         <p class="font-medium">Make sure to not leave any field blank</p><br>
         <form class="w-full" @submit.prevent=""> 

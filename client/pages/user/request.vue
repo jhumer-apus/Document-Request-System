@@ -1,5 +1,14 @@
 <template>
     <div class="bg-slate-100 min-h-screen pb-20 text-black">
+        <div class="md:flex items-center text-xl space-x-8 w-fit m-auto my-16 text-slate-400 font-semibold">
+            <span :class="{highlight:page==1}">Select Document</span>
+            <font-awesome-icon :icon="['fas', 'angle-right']" />
+            <span :class="{highlight:page==2}">Fill-out Request Form</span>
+            <font-awesome-icon :icon="['fas', 'angle-right']" />
+            <span :class="{highlight:page==3}">Schedule Pick-up Date</span>
+            <font-awesome-icon :icon="['fas', 'angle-right']" />
+            <span :class="{highlight:page==4}">Review &amp; Submit</span>
+        </div>
         <SelectDocuments :error="errorPageOne" v-if="page==1"/>
         <RequestForm :error="errorPageTwo" v-if="page==2"/>
         <PickUpSchedule :error="errorPageThree" v-if="page==3"/>
@@ -89,6 +98,9 @@ export default {
 <style scoped>
 h1{
   @apply text-3xl font-bold
+}
+.highlight{
+    @apply text-black
 }
 
 </style>

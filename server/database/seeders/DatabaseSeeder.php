@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
         Document::create([
             'name'=>'Barangay Clearance',
             'description' => 'Lorem ipsum',
-            'fee' => 10.00
+            'fee' => 100.00
         ]);
 
         Document::create([

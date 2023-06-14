@@ -1,5 +1,5 @@
 <template>
-  <div class="md:p-20">
+  <div class="md:px-20">
     <h1>Review Before Submitting</h1>
     <p>To avoid rejection of your request, please be carefully review the details</p>
     <div class="md:flex mt-4 md:space-x-8">     

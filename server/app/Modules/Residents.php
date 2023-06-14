@@ -24,7 +24,8 @@ class Residents
             'barangay',
             'municipality',
             'province'
-        )->when(!empty($search), function ($query) use($search){
+        )->where("users.email_verified_at","!=",null)
+        ->when(!empty($search), function ($query) use($search){
             return $query->where(DB::raw('CONCAT(users.first_name, " ", users.last_name)'), 'LIKE', $search . '%');
         })->when(!empty($sex), function ($query) use($sex){
             return $query->whereIn("users.sex", $sex);

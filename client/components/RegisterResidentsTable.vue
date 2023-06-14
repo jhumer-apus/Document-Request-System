@@ -39,7 +39,7 @@ export default {
             return word.charAt(0).toUpperCase() + word.slice(1)
         },
         wordDate(date){
-          return moment(date).format('MMMM d, YYYY');
+          return moment(date).format('MMMM DD, YYYY');
         },
         showModal(id){
             this.resident_id=id

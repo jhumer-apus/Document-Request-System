@@ -22,6 +22,7 @@
     </div>
     <RequestModal :details="details" v-if="showRequestModal" @closeModal="showRequestModal = false"/>
     <ApprovedModal :details="details" v-if="showApprovedModal" @closeModal="closeApproveModal" @viewDocument="generatePDF"/>
+    <CompleteModal :details="details" v-if="showCompleteModal" @closeModal="showCompleteModal = false"/>
     <div id="content" v-if="showApprovedModal">
         <BarangayPermit v-if="doc_id == 2" :user="user"/>
         <BarangayClearance v-if="doc_id == 3" :user="user"/>
@@ -45,6 +46,7 @@ export default {
         return{
             showRequestModal:false,
             showApprovedModal:false,
+            showCompleteModal:false,
             details:'',
             spinning:false,
             status:'pending',
@@ -120,22 +122,26 @@ export default {
                     if(status =='pending'){
                         this.showRequestModal = true
                     }else if(status == 'approved'){
-                        this.getResidentDetails(user_id,doc_id)
-                        this.showApprovedModal = true
+                        this.getResidentDetails(id,user_id,doc_id)
+                    }else{
+                        this.showCompleteModal = true
+                        this.spinning = false
                     }
-                    this.spinning = false
                 }).catch(err=>{
                     console.log(err)
                     this.spinning = false
                 })
         },
-        async getResidentDetails(user_id,doc_id){
+        async getResidentDetails(id,user_id,doc_id){
             var params = {
-                user_id:user_id
+                user_id:user_id,
+                request_id:id
             }
             await this.$axios.get('/admin/residents/get-resident-details',{params}).then(response=>{
                 this.user = response.data
                 this.doc_id = doc_id
+                this.showApprovedModal = true
+                this.spinning = false
             })
         },
     }

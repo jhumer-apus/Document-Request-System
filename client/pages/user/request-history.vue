@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <h1>Request History</h1>
+    <h1>Request History</h1><br>
     <Search 
       @search="search" 
       :selected="$store.state.request_history.status?$store.state.request_history.status:'all'" 
@@ -28,7 +28,7 @@ export default {
         lastPage:1,
         spinning:false,
         nameSearch:'',
-        options:['all','completed','approved','processing','pending','rejected'],
+        options:['all','completed','approved','pending','rejected'],
       }
     },
     mounted(){

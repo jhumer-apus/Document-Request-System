@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <h1>Register Residents</h1>
+    <h1>Registered Residents</h1>
     <SearchOnly
       @search="search"
       @changeSearch="changeSearch"

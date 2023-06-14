@@ -51,7 +51,7 @@ export default {
             })
         },
       registrationDate(){
-          return moment(this.$auth.$state.user.email_verified_at).format('MMMM d, YYYY');
+          return moment(this.$auth.$state.user.email_verified_at).format('MMMM DD, YYYY');
       },
       uploadPhoto(e){
         const config = {

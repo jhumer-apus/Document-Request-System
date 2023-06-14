@@ -70,13 +70,13 @@ class DatabaseSeeder extends Seeder
         Document::create([
             'name'=>'Cedula',
             'description' => 'Lorem ipsum',
-            'fee' => 10.00
+            'fee' => 35.00
         ]);
 
         Document::create([
             'name'=>'Barangay Permit',
             'description' => 'Lorem ipsum',
-            'fee' => 10.00
+            'fee' => 00.00
         ]);
 
         Document::create([
@@ -88,19 +88,19 @@ class DatabaseSeeder extends Seeder
         Document::create([
             'name'=>'Barangay Business Clearance',
             'description' => 'Lorem ipsum',
-            'fee' => 10.00
+            'fee' => 330.00
         ]);
 
         Document::create([
             'name'=>'Certificate of Residency',
             'description' => 'Lorem ipsum',
-            'fee' => 10.00
+            'fee' => 00.00
         ]);
 
         Document::create([
             'name'=>'Certificate of Indigency',
             'description' => 'Lorem ipsum',
-            'fee' => 10.00
+            'fee' => 00.00
         ]);
     
     }

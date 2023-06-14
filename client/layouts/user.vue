@@ -17,17 +17,15 @@ export default {
         updateRequired:false
       }
     },
-    created(){
-      this.getUserData()
+    mounted(){
+      this.checkDetails();
     },
     methods:{
-      async getUserData(){
-            await this.$axios.get('/user/get-details/').then(response=>{
-                let user = response.data
-                if(!user.first_name || !user.middle_name || !user.last_name || !user.sex || !user.civil_status || !user.birthdate || !user.birthplace || !user.religion || !user.citizenship || !user.purok || !user.barangay || !user.municipality || !user.province || !user.mobile_number || !user.email || !user.mothers_firstname || !user.mothers_middlename || !user.mothers_lastname || !user.fathers_firstname || !user.fathers_middlename || !user.fathers_lastname){
-                    this.updateRequired = true
-                }
-            })
+      checkDetails(){
+            let user = this.$auth.$state.user
+            if(!user.first_name || !user.middle_name || !user.last_name || !user.sex || !user.civil_status || !user.birthdate || !user.birthplace || !user.religion || !user.citizenship || !user.purok || !user.barangay || !user.municipality || !user.province || !user.mobile_number || !user.email || !user.mothers_firstname || !user.mothers_middlename || !user.mothers_lastname || !user.fathers_firstname || !user.fathers_middlename || !user.fathers_lastname){
+                this.updateRequired = true
+            }
         },
     }
 

@@ -14,6 +14,11 @@ export default {
             searchValue:"",
         }
     },
+    watch:{
+        searchValue(){
+            this.$emit("changeSearch",this.searchValue)
+        }
+    }
 }
 </script>
 

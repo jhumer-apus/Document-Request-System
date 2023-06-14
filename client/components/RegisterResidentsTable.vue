@@ -11,7 +11,7 @@
         </thead>
    
     <tr v-for="resident in data" :key="resident.id">
-        <td>{{resident.last_name}}, {{resident.first_name}} {{resident.middle_name[0]}}.</td>
+        <td>{{resident.first_name}} {{resident.middle_name}} {{resident.last_name}}, </td>
         <td>{{wordDate(resident.email_verified_at)}}</td>
         <td>{{capitalize(resident.sex)}}</td>
         <td>{{resident.mobile_number}}</td>

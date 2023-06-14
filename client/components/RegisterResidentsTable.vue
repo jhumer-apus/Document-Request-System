@@ -20,7 +20,7 @@
     </tr>
 
     </table>
-    <ShowResidentDetailsModal v-if="showInfo" :resident_id="resident_id"/>
+    <ShowResidentDetailsModal v-if="showInfo" :resident_id="resident_id" @close="showInfo = false"/>
   </div>
 </template>
 

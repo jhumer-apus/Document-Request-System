@@ -28,7 +28,7 @@ export default {
         lastPage:1,
         spinning:false,
         nameSearch:'',
-        options:['all','completed','approved','processing','pending','rejected'],
+        options:['all','completed','approved','pending','rejected'],
       }
     },
     mounted(){

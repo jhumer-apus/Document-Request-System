@@ -10,7 +10,7 @@
             <th>Address</th>
         </thead>
    
-    <tr v-for="resident in data" :key="resident.id">
+    <tr v-for="resident in data" :key="resident.id" class="cursor-pointer" @click="showModal(resident.id)">
         <td>{{resident.first_name}} {{resident.middle_name}} {{resident.last_name}}, </td>
         <td>{{wordDate(resident.email_verified_at)}}</td>
         <td>{{capitalize(resident.sex)}}</td>
@@ -20,9 +20,7 @@
     </tr>
 
     </table>
-    <div>
-        <span></span>
-    </div>
+    <ShowResidentDetailsModal v-if="showInfo" :resident_id="resident_id"/>
   </div>
 </template>
 
@@ -32,6 +30,8 @@ export default {
     props:['data'],
     data(){
         return{
+            showInfo:false,
+            resident_id:""
         }
     },
     methods:{
@@ -41,6 +41,11 @@ export default {
         wordDate(date){
           return moment(date).format('MMMM d, YYYY');
         },
+        showModal(id){
+            this.resident_id=id
+            this.showInfo = true
+
+        }
     }
 
 }

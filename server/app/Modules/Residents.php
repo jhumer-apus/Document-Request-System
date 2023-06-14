@@ -12,6 +12,7 @@ class Residents
         $sex = $payload->sex;
         $civilStatus = $payload->civilStatus;
         $user = User::select(
+            'id',
             'first_name',
             'middle_name',
             'last_name',

@@ -14,7 +14,7 @@ Thanks,<br>
     div{
         width:fit-content;
         margin:auto;
-        font-size:30px;
+        font-size:20px;
         padding:4px 12px 4px 12px;
 
     }

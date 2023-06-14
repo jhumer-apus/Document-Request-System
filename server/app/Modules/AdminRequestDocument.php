@@ -2,6 +2,8 @@
 
 namespace App\Modules;
 
+use App\Jobs\SendEmail;
+use App\Mail\NotifyStatus;
 use App\Models\User;
 use App\Models\Appointment;
 use App\Models\Document;
@@ -139,6 +141,11 @@ class AdminRequestDocument{
             'status' => $status     
         ]);
 
+        $data = (object)[
+            'document_name'=> $document,
+            'status' => $status
+        ];
+        $this->notifyUser($id,$data);
 
         return response()->json(['message'=>'Request id '.$id. ' is '.$status]);
         
@@ -175,6 +182,18 @@ class AdminRequestDocument{
         return response()->json([
             'count'=>$count
         ]);
+    }
+    public function notifyUser($request_id, $data){
+
+        $user = User::select('email')
+            ->join('requests','requests.user_id','=','users.id')
+            ->where('requests.id',$request_id)
+            ->first();
+        $details = (object) array(
+            'email' => $user->email,
+            'class' => new NotifyStatus($data)
+        );
+        SendEmail::dispatch($details);
     }
 }
 

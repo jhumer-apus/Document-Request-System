@@ -1,11 +1,10 @@
 <x-mail::message>
-# Forgot Password
-
-Verify your email with this code below.
+# Request Status
 
 <div>
-    {{$code}}
+Your request <b>{{$data->document_name}}</b> has been <span class="status">{{$data->status}}</span>.
 </div>
+
 
 Thanks,<br>
 {{ config('app.name') }}
@@ -13,13 +12,14 @@ Thanks,<br>
 
 <style>
     div{
-        background-color:yellow;
         width:fit-content;
         margin:auto;
-        color:white;
-        font-size:30px;
-        font-weight:600;
+        font-size:20px;
         padding:4px 12px 4px 12px;
 
     }
+    .status{
+        font-weight:bold;
+    }
+
 </style>

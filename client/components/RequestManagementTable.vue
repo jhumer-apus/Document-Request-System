@@ -121,6 +121,7 @@ export default {
                     this.status = status
                     if(status =='pending'){
                         this.showRequestModal = true
+                        this.spinning = false
                     }else if(status == 'approved'){
                         this.getResidentDetails(id,user_id,doc_id)
                     }else{

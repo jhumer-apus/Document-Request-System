@@ -47,7 +47,7 @@
                 <input type="tel" id="phone_number" name="phone_number" v-model="data.mobile_number" placeholder="Mobile Number (09XXXXXXXXX)" min="11" pattern="[0-9]{11}" required><br><br>
                 <input type="email" id="email" name="email" v-model="data.email" placeholder="Email Address" required>
                 <p class="error">{{errorEmail}}</p><br>
-                <label>Password(8 characters minimum)</label>
+                <label>Make sure your new password is 8 characters or more. Try including numbers, letters, &amp; punctuation marks for a strong password</label>
                 <div class="input-container">
                     <div class="password-container">
                         <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="data.password" placeholder="Enter Password" minlength="8" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showPassword = !showPassword"/>

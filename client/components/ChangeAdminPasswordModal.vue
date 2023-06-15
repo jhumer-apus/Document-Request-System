@@ -5,15 +5,15 @@
         <div class="border-t border-slate-400 p-4">
             <label>Current Password</label>
             <div class="password-container">
-                <input class="border-none" :type="currPasswordFieldType" id="password" name="password" v-model="currPassword"  min="8" required><font-awesome-icon :icon="['fas', currEyeIconType]" class="eyeIcon" @click="showCurrPassword = !showCurrPassword"/>
+                <input class="border-none" :type="currPasswordFieldType" id="password" name="password" v-model="currPassword"  minlength="8" required><font-awesome-icon :icon="['fas', currEyeIconType]" class="eyeIcon" @click="showCurrPassword = !showCurrPassword"/>
             </div><br>
             <label>New Password</label>
             <div class="password-container">
-                <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="newPassword"  min="8" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showNewPassword = !showNewPassword"/>
+                <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="newPassword"  minlength="8" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showNewPassword = !showNewPassword"/>
             </div><br>
             <label>Confirm New Password</label>
             <div class="password-container" >
-                <input class="border-none" :type="confirmPasswordFieldType" id="confirm_password" v-model="confirmPassword" name="confirm_password" min="8"  required><font-awesome-icon :icon="['fas', confirmEyeIconType]" class="eyeIcon" @click="showConfirmPassword = !showConfirmPassword"/>
+                <input class="border-none" :type="confirmPasswordFieldType" id="confirm_password" v-model="confirmPassword" name="confirm_password" minlength="8"  required><font-awesome-icon :icon="['fas', confirmEyeIconType]" class="eyeIcon" @click="showConfirmPassword = !showConfirmPassword"/>
             </div>
         </div>
         <p class="error">{{error}}</p><br>
@@ -91,6 +91,7 @@ export default {
             this.spinning = true
             if(this.newPassword != this.confirmPassword){
                 this.error= "Inconsistent password!"
+                this.spinning = false
             }else{
                 var params={
                     currPassword:this.currPassword,

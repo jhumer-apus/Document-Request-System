@@ -49,10 +49,10 @@
       <h2 class="text-sky-900 font-black text-2xl text-center">Create New Password</h2><br>
       <p>Make sure your new password is 8 characters or more. Try including numbers, letters, &amp; punctuation marks for a strong password</p><br>
       <div class="password-container">
-          <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="password" placeholder="Enter Password" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showPassword = !showPassword"/>
+          <input class="border-none" :type="passwordFieldType" id="password" name="password" v-model="password" minlength="8" placeholder="Enter Password" required><font-awesome-icon :icon="['fas', eyeIconType]" class="eyeIcon" @click="showPassword = !showPassword"/>
       </div><br>
       <div class="password-container" >
-          <input class="border-none" :type="confirmPasswordFieldType" id="confirm_password" v-model="confirmPassword" name="confirm_password" placeholder="Confirm Password" required><font-awesome-icon :icon="['fas', confirmEyeIconType]" class="eyeIcon" @click="showConfirmPassword = !showConfirmPassword"/>
+          <input class="border-none" :type="confirmPasswordFieldType" id="confirm_password" v-model="confirmPassword" minlength="8" name="confirm_password" placeholder="Confirm Password" required><font-awesome-icon :icon="['fas', confirmEyeIconType]" class="eyeIcon" @click="showConfirmPassword = !showConfirmPassword"/>
       </div>
       <p class="error">{{errorPass}}</p>
       <div class="button-wrapper text-center">

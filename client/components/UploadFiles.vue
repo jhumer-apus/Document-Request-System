@@ -10,9 +10,9 @@
                     </div>
                 </label>
                 </div>
-            
         </div><br>
         
+        <p class="mb-2 ml-2">Files:{{files.length}}/5</p>
         <div v-for="(file,i) in files" :key="i" class="float-left relative p-4 border border-blue-500 text-center rounded-md ml-2 mb-2">
             <button class="text-right absolute top-0 right-1" @click="remove(i)"><font-awesome-icon :icon="['fas', 'xmark']"/></button>
             <div class="text-center w-fit">

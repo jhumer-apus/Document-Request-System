@@ -18,8 +18,8 @@
         <div v-if="0<i-dayToMinus && i-dayToMinus<=endDate" class="w-full">
           <p class="date-number">{{i-dayToMinus}}</p>
           <div v-if="(i+1) % 7 != 0 && (i+1) % 7 != 1 && !holidays[month].includes(i-dayToMinus) && i-dayToMinus>currentDate">
-              <button @click="selectedDate(i-dayToMinus,'am')">AM {{getSlots(i-dayToMinus, 'am')}} slots</button>
-              <button @click="selectedDate(i-dayToMinus,'pm')">PM {{getSlots(i-dayToMinus, 'pm')}} slots</button>
+              <button @click="confirm(i-dayToMinus,'am')">AM {{getSlots(i-dayToMinus, 'am')}} slots</button>
+              <button @click="confirm(i-dayToMinus,'pm')">PM {{getSlots(i-dayToMinus, 'pm')}} slots</button>
           </div>
           <div v-else>
               <font-awesome-icon :icon="['fas', 'ban']" class="na-icon"/>
@@ -29,6 +29,7 @@
       </li>
     </ul>
     <p class="error">{{error}}</p>
+    <ConfirmationModal message="Confirm selected schedule?" @close="confirmModal = false" @yes="selectDate" v-if="confirmModal" />
   </div>
 </template>
 
@@ -38,6 +39,9 @@ export default {
   props:["error"],
   data(){
     return{
+      confirmModal:false,
+      day:'',
+      meridiem:'',
       monthName:'',
       currentDate: new Date().getDate(),
       startDay:0,
@@ -97,10 +101,15 @@ export default {
       let slots = 100 - filterAppointment.length
       return slots
     },
-    selectedDate(day,meridiem){
+    confirm(day,meridiem){
+      this.day = day
+      this.meridiem = meridiem
+      this.confirmModal = true
+    },
+    selectDate(){
       let dateClicked={
-        selectedDate:moment(new Date(this.year,this.month, day)).format('yyyy-MM-DD'),
-        meridiem:meridiem
+        selectedDate:moment(new Date(this.year,this.month, this.day)).format('yyyy-MM-DD'),
+        meridiem:this.meridiem
       } 
       this.$store.commit('request/updatePickUpDate', {
           pickUpDate: dateClicked,

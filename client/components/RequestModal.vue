@@ -82,13 +82,13 @@
         <h2>Comments/Remarks</h2>
         <textarea rows="4" v-model="comment"></textarea>
         <div class="w-fit m-auto flex text-white space-x-4 mt-10">
-            <button class="bg-red-500 status-button" @click="submit('rejected', details.request_number, details.document_name)">
+            <button class="bg-red-500 status-button" @click="confirm('reject')">
                 <div class="status-wrapper">
                     <font-awesome-icon :icon="['fas', 'thumbs-down']" flip="horizontal" class="thumbs-icon"/>
                     <p>Reject</p>
                 </div>
             </button>
-            <button class="bg-green-500 status-button" @click="submit('approved', details.request_number, details.document_name)">
+            <button class="bg-green-500 status-button" @click="confirm('approve')">
                 <div class="status-wrapper">
                     <font-awesome-icon :icon="['fas', 'thumbs-up']" class="thumbs-icon"/>
                     <p>Approve</p>
@@ -96,7 +96,8 @@
             </button>
         </div>
     </div>
-    <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false"/>
+    <!-- <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false"/> -->
+    <ConfirmationModal :message="message" @close="confirmModal = false" @yes="submit" v-if="confirmModal" />
     <Spin v-if="spinning"/>
   </div>
 </template>
@@ -109,22 +110,30 @@ export default {
     data(){
         return{
             data:[],
-            viewImage:false,
+            // viewImage:false,
+            message:"",
             comment:'',
             spinning:false,
+            status:'',
+            confirmModal:false,
         }
     },
     mounted(){
 
     },
     methods:{
-        async submit(status,request_number, document_name){
+        confirm(status){
+            this.status = status == "approve"? "approved":"rejected"
+            this.message = `Are you sure you want to ${status} this request?`
+            this.confirmModal = true
+        },
+        async submit(){
             this.spinning =true
             var params = {
                 id: this.details.id,
-                status: status,
+                status: this.status,
                 comment:this.comment,
-                document: document_name
+                document: this.details.document_name
 
             }
             await this.$axios.put('/admin/request/update-status',params).then(response=>{

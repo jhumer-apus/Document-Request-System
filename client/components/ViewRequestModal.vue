@@ -64,7 +64,7 @@
                     <div v-if="details.id_type=='pdf'"></div>
                 </div><br>
                 <h2>Supporting Documents</h2><br>
-                <div class="flex">
+                <div class="flex items-center space-x-2">
                     <label for="supporting_documents" class="reupload">
                         Add Files
                         <input type="file" id="supporting_documents" accept="application/pdf, image/jpg, image/png, image/jpeg" v-on:change="addFiles" multiple hidden> 
@@ -181,10 +181,12 @@ export default {
         },
         addFiles(e){
             const files = e.target.files
-            
-            if(files && files.length>0 && files.length<=5){
-                for(let i = 0; i<files.length; i++){
-                    this.supporting_documents.push(files[i])
+            if(files && files.length>0){
+                const documentsLen = 5-this.supporting_documents.length;
+                for(let i = 0; i<documentsLen; i++){
+                    if(i<files.length){
+                        this.supporting_documents.push(files[i])
+                    }
                 }
             }
         },

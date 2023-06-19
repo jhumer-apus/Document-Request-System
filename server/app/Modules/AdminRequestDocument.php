@@ -116,6 +116,7 @@ class AdminRequestDocument{
         $status = $payload->status;
         $comment = $payload->comment;
         $document = $payload->document;
+        $fee = $payload->document_fee;
 
         Request::where('id', $id)->update([
             'status' => $status,
@@ -143,7 +144,9 @@ class AdminRequestDocument{
 
         $data = (object)[
             'document_name'=> $document,
-            'status' => $status
+            'status' => $status,
+            'comment' => $comment,
+            'fee' => $fee
         ];
         $this->notifyUser($id,$data);
 

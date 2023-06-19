@@ -129,6 +129,7 @@ export default {
         },
         async submit(){
             this.spinning =true
+            this.confirmModal = false
             var params = {
                 id: this.details.id,
                 status: this.status,

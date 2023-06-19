@@ -1,11 +1,20 @@
 <template>
   <div class="w-fit m-auto">
     <div class="header-calendar">
-      <button @click="prev"><font-awesome-icon :icon="['fas', 'chevron-left']" /></button>
-      <h1>{{monthName}}</h1>
-      <button @click="next"><font-awesome-icon :icon="['fas', 'chevron-right']" /></button>
-      <h1>{{year}}</h1>
-    </div>
+      <div class="flex w-fit space-x-4">
+        <button @click="prev"><font-awesome-icon :icon="['fas', 'chevron-left']" /></button>
+        <h1>{{monthName}}</h1>
+        <button @click="next"><font-awesome-icon :icon="['fas', 'chevron-right']" /></button>
+        <h1>{{year}}</h1>
+      </div>
+      <div class="flex items-center border border-slate-500 rounded-md space-x-2 p-2">
+        <img src="~/assets/images/calendar.png" width="50" height="50">
+        <div v-if="selectedDay">
+          <p>Appoinment Date:</p>
+          <p>{{appoinmentDate()}} {{selectedMeridiem.toUpperCase()}}</p>
+        </div>
+      </div>
+    </div><br>
     <ul class="grid grid-cols-7">
       <li class="weekdays">Sunday</li>
       <li class="weekdays">Monday</li>
@@ -18,8 +27,8 @@
         <div v-if="0<i-dayToMinus && i-dayToMinus<=endDate" class="w-full">
           <p class="date-number">{{i-dayToMinus}}</p>
           <div v-if="(i+1) % 7 != 0 && (i+1) % 7 != 1 && !holidays[month].includes(i-dayToMinus) && i-dayToMinus>currentDate">
-              <button @click="confirm(i-dayToMinus,'am')">AM {{getSlots(i-dayToMinus, 'am')}} slots</button>
-              <button @click="confirm(i-dayToMinus,'pm')">PM {{getSlots(i-dayToMinus, 'pm')}} slots</button>
+              <button :class="{selected:i-dayToMinus == selectedDay && meridiem == 'am'}" @click="selectDate(i-dayToMinus,'am')">AM {{getSlots(i-dayToMinus, 'am')}} slots</button>
+              <button :class="{selected:i-dayToMinus == selectedDay && meridiem == 'pm'}" @click="selectDate(i-dayToMinus,'pm')">PM {{getSlots(i-dayToMinus, 'pm')}} slots</button>
           </div>
           <div v-else>
               <font-awesome-icon :icon="['fas', 'ban']" class="na-icon"/>
@@ -29,7 +38,6 @@
       </li>
     </ul>
     <p class="error">{{error}}</p>
-    <ConfirmationModal message="Confirm selected schedule?" @close="confirmModal = false" @yes="selectDate" v-if="confirmModal" />
   </div>
 </template>
 
@@ -39,7 +47,6 @@ export default {
   props:["error"],
   data(){
     return{
-      confirmModal:false,
       day:'',
       meridiem:'',
       monthName:'',
@@ -52,6 +59,10 @@ export default {
       countDate:0,
       holidays:[[1],[],[],[6,7,10,21],[1],[12],[],[28],[],[],[27],[25,30]],
       appointments:[],
+      selectedDay:"",
+      selectedMeridiem:"",
+      selectedMonth:"",
+      selectedYear:"",
     }
   },
   mounted(){
@@ -59,6 +70,10 @@ export default {
     this.getAppointments(this.month)
   },
   methods:{
+    appoinmentDate(){
+      let date = new Date(this.selectedYear, this.selectedMonth+1, this.selectedDay)
+      return moment(date).format('MMMM DD, yyyy')
+    },
     renderCalendar(year, month){
       this.monthName = moment(month+1, 'MM').format('MMMM')
       this.endDate = new Date(year, month+1, 0).getDate()
@@ -101,15 +116,15 @@ export default {
       let slots = 100 - filterAppointment.length
       return slots
     },
-    confirm(day,meridiem){
-      this.day = day
-      this.meridiem = meridiem
-      this.confirmModal = true
-    },
-    selectDate(){
+    selectDate(day,meridiem){
+      this.confirmModal = false
+      this.selectedDay = day
+      this.selectedMeridiem = meridiem
+      this.selectedMonth = this.month
+      this.selectedYear = this.year
       let dateClicked={
-        selectedDate:moment(new Date(this.year,this.month, this.day)).format('yyyy-MM-DD'),
-        meridiem:this.meridiem
+        selectedDate:moment(new Date(this.year,this.month, day)).format('yyyy-MM-DD'),
+        meridiem:meridiem
       } 
       this.$store.commit('request/updatePickUpDate', {
           pickUpDate: dateClicked,
@@ -125,7 +140,7 @@ h1{
   @apply text-3xl font-bold
 }
 .header-calendar{
-  @apply flex w-fit
+  @apply flex justify-between items-center
 }
 .header-calendar > button{
   @apply px-4
@@ -154,5 +169,8 @@ li{
 }
 .na-message{
   @apply text-red-600
+}
+.selected{
+  @apply bg-sky-900
 }
 </style>

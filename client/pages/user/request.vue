@@ -18,7 +18,7 @@
             <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page==1" @click="$router.push('/user/dashboard')">Cancel</button>
             <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page>1 && page<=4" @click="page--">Back</button>
             <button class="bg-red-500 text-white px-20 py-2 rounded-lg" v-if="page<4" @click="nextPage" >Next</button>
-            <button class="bg-red-500 text-white px-20 py-2 rounded-lg" v-if="page==4" @click="submitRequest">Save</button>
+            <button class="bg-red-500 text-white px-20 py-2 rounded-lg" v-if="page==4" @click="submitRequest" :disabled="!this.$store.state.request.isCertify">Save</button>
         </div>
         <Spin v-if="spinning"/>
         <ConfirmationModal :message="'Confirm selected schedule '+appoinmentDate()+ ' '+$store.state.request.meridiem+'?'" @close="confirmModal = false" @yes="setPickUpDate" v-if="confirmModal" />
@@ -74,6 +74,7 @@ export default {
             }
             else if(this.page==3){
                 this.confirmModal = true
+
             }
         },
         setPickUpDate(){

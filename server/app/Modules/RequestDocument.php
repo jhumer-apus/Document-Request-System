@@ -286,10 +286,12 @@ class RequestDocument{
         }
 
         //update supporting documents
-        for($i = 0; $i<count($supporting_document); $i++){
-            if(gettype($supporting_document[$i]) != 'string'){
-                $supportingDocumentTransaction = $this->storeSupportingDocument($i,$payload);
-                $requestSupportingDocumentTransaction = $this->storeRequestSupportingDocument($request_id, $supportingDocumentTransaction->id);
+        if($supporting_document){
+            for($i = 0; $i<count($supporting_document); $i++){
+                if(gettype($supporting_document[$i]) != 'string'){
+                    $supportingDocumentTransaction = $this->storeSupportingDocument($i,$payload);
+                    $requestSupportingDocumentTransaction = $this->storeRequestSupportingDocument($request_id, $supportingDocumentTransaction->id);
+                }
             }
         }
 

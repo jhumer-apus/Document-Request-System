@@ -7,6 +7,7 @@ export const state = () => ({
   selectedDate: "",
   meridem: "",
   purpose: "",
+  isCertify: false,
 });
 
 export const mutations = {
@@ -56,5 +57,8 @@ export const mutations = {
   },
   updateFee(state, payload) {
     state.formData.append("fee", payload.fee);
+  },
+  updateIsCertify(state, value) {
+    state.isCertify = value;
   },
 };

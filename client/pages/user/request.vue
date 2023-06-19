@@ -18,13 +18,15 @@
             <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page==1" @click="$router.push('/user/dashboard')">Cancel</button>
             <button class="bg-stone-500 text-white px-20 py-2 rounded-lg" v-if="page>1 && page<=4" @click="page--">Back</button>
             <button class="bg-red-500 text-white px-20 py-2 rounded-lg" v-if="page<4" @click="nextPage" >Next</button>
-            <button class="bg-red-500 text-white px-20 py-2 rounded-lg" v-if="page==4" @click="submitRequest">Save</button>
+            <button class="bg-red-500 text-white px-20 py-2 rounded-lg" v-if="page==4" @click="submitRequest" :disabled="!this.$store.state.request.isCertify">Save</button>
         </div>
         <Spin v-if="spinning"/>
+        <ConfirmationModal :message="'Confirm selected schedule '+appoinmentDate()+ ' '+$store.state.request.meridiem+'?'" @close="confirmModal = false" @yes="setPickUpDate" v-if="confirmModal" />
     </div>
 </template>
 
 <script>
+import moment from 'moment'
 export default {
     layout: 'user',
     data(){
@@ -36,6 +38,7 @@ export default {
             errorPageThree:"",
             spinning:false,
             donePage:false,
+            confirmModal:false,
         }
     },
     mounted(){
@@ -44,6 +47,10 @@ export default {
             });
     },
     methods:{
+        appoinmentDate(){
+            let date = new Date(this.$store.state.request.selectedDate)
+            return moment(date).format('MMMM DD, yyyy')
+        },
         nextPage(){
             if(this.page==1){
                 let selectedDocument = this.$store.state.request.selectedDocument
@@ -66,15 +73,21 @@ export default {
                 }
             }
             else if(this.page==3){
-                let pickUpDate = this.$store.state.request
-                if(!pickUpDate.selectedDate || !pickUpDate.meridiem){
-                    this.errorPageThree="Please select a date"
-                }
-                else{
-                    this.errorPageThree = ""
-                    this.page++
-                }
+                this.confirmModal = true
+
             }
+        },
+        setPickUpDate(){
+            this.confirmModal = false
+            let pickUpDate = this.$store.state.request
+            if(!pickUpDate.selectedDate || !pickUpDate.meridiem){
+                this.errorPageThree="Please select a date"
+            }
+            else{
+                this.errorPageThree = ""
+                this.page++
+            }
+
         },
         async submitRequest(){
             this.spinning = true

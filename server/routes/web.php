@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ForgotPassword;
 use App\Mail\SignUp;
-
+use App\Mail\NotifyStatus;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +17,13 @@ use App\Mail\SignUp;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $data = (object) array(
+        'document_name' => "Cedula",
+        'status' => "approved",
+        'comment'=>"Love you",
+        'fee' => "100.00"
+    );
+    return new NotifyStatus($data);
 });
 
 Route::post('/message', function () {

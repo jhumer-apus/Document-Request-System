@@ -1,12 +1,12 @@
 <template>
   <div class="modal">
     <div class="content text-center">
-        <font-awesome-icon :icon="['fas', 'circle-exclamation']" class="warning"/><br>
-        <h1>Are you sure?</h1><br>  
+        <h1>Confirmation Required</h1><br>  
+        <font-awesome-icon :icon="['fas', 'circle-exclamation']" class="warning"/><br><br>
         <p>{{message}}</p><br>
         <div class="m-auto space-x-4">
-            <button class="bg-slate-200 w-32 py-2" @click="$emit('close')">No</button>
-            <button class="bg-red-500 text-white w-32 py-2" @click="$emit('yes')">Yes</button>
+            <button class="bg-slate-200 w-32 py-2 rounded-md" @click="$emit('close')">No</button>
+            <button class="bg-green-500 text-white w-32 py-2 rounded-md" @click="$emit('yes')">Yes</button>
         </div>
     </div>
   </div>
@@ -21,8 +21,8 @@ export default {
 
 <style scoped>
 .warning{
-    font-size:50px;
-    @apply text-red-500
+    font-size:90px;
+    @apply text-red-600
 }
 h1{
     @apply text-2xl font-bold

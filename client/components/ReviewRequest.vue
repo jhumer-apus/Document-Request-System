@@ -44,21 +44,19 @@
           <p><span class="text-red-500 font-bold">Note: </span>Payment can be made upon claiming your requested document at the barangay office.</p>
         </div>
       </div>
+    </div><br>
+    <div class="flex items-center rounded-lg p-4 bg-slate-200 space-x-4">
+      <input type="checkbox" class="w-fit" @change="onChange">
+      <p><b>I hereby certify that the above information is true and correct to the best of my knowledge. I understand that any false statement or misrepresentation may result in the rejection of my request and is punishable under the law.</b></p>
     </div>
-
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 export default {
-
   methods:{
     getFeeDocument(){
-      // let total = parseFloat(0.00)
-      // this.$store.state.request.selectedDocuments.forEach(document=>{
-      //   total = total + parseFloat(document.fee)
-      // })
       let fee = parseFloat(this.$store.state.request.selectedDocument.fee);
       this.$store.commit('request/updateFee', {
           fee: fee.toFixed(2)
@@ -67,6 +65,9 @@ export default {
     },
     getDate(date){
       return moment(date).format("dddd, MMMM DD, yyyy")
+    },
+    onChange(e){
+      this.store.commit('request/updateIsCertify',e.target.checked);
     }
   },
 }
@@ -79,5 +80,8 @@ export default {
 h1{
   @apply text-sky-900 text-3xl font-bold
 }
+input[type=checkbox] { 
+     @apply w-8 h-8
+ }
 
 </style>

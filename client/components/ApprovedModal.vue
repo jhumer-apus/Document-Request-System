@@ -63,9 +63,10 @@
         </div><br>
         <div class="w-fit m-auto space-x-4">
             <button class="bg-slate-300 p-2 w-32" @click="$emit('closeModal')">Cancel</button>
-            <button class="bg-blue-500 p-2 w-32 text-white" @click="complete">Complete</button>
+            <button class="bg-blue-500 p-2 w-32 text-white" @click="confirmModal = true">Complete</button>
         </div>
     </div>
+    <ConfirmationModal message="Are you sure you want to mark this request as completed?" @close="confirmModal = false" @yes="complete" v-if="confirmModal" />
     <Spin v-if="spinning"/>
   </div>
 </template>
@@ -82,7 +83,8 @@ export default {
             currentPath:'',
             comment:'',
             spinning:false,
-            comment:''
+            comment:'',
+            confirmModal:false,
 
         }
     },
@@ -142,17 +144,22 @@ export default {
             return moment(date).format('MMMM DD, yyyy')
         },
         async complete(){
+            this.confirmModal = false
+            this.spinning = true
             var params ={
                 id: this.details.id,
                 status: 'completed',
                 comment: this.comment,
+                fee: this.details.document_fee
             }
             await this.$axios.put('/admin/request/update-status', params).then(response=>{
                 this.$store.commit('trigger/updateRefreshRequestTable',this.$store.state.trigger.refreshRequestTable+1)
                 this.$emit('closeModal')
+                this.spinning = false
             }).catch(err=>{
                 this.$store.commit('trigger/updateRefreshRequestTable',this.$store.state.trigger.refreshRequestTable+1)
                 this.$emit('closeModal')
+                this.spinning = false
             })
         }
     }

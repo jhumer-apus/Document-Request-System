@@ -67,7 +67,7 @@ export default {
       return moment(date).format("dddd, MMMM DD, yyyy")
     },
     onChange(e){
-      this.store.commit('request/updateIsCertify',e.target.checked);
+      this.$store.commit('request/updateIsCertify',e.target.checked);
     }
   },
 }

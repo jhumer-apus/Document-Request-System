@@ -13,7 +13,7 @@ class SetRequestStatusExpireCron extends Command
      *
      * @var string
      */
-    protected $signature = 'app:set-request-status-expire-cron';
+    protected $signature = 'set-request-to-expire:every-minute';
 
     /**
      * The console command description.

@@ -47,10 +47,15 @@
                 <p class="label">Supporting Documents</p>
                 <span class="guide">Upload photo/scanned copy of your supporting documents.</span>
             </div>
-            <label class="col-span-2">
-                Valid ID <span class="guide">(Valid types are <b>jpg</b> and <b>png</b>)</span>
-                <!-- <input type="file" v-on:change="onChangeID" accept="image/jpeg, image/png, image/jpg"> -->
-            </label>
+            <div class="flex items-center space-x-4 w-fit">
+                <label class="col-span-2">
+                    Valid ID <span class="guide">(Valid types are <b>jpg</b> and <b>png</b>)</span>
+                </label>
+                <div class="tooltip-container">
+                    <font-awesome-icon :icon="['fas', 'circle-question']" class="tooltip-icon"/>
+                    <div class="tooltip-text">hiiii</div>
+                </div>
+            </div>
             <UploadFiles :limit="1" :isRequired="true" @passFiles="passID" id="forID" class="col-span-2"/>
             <label class="col-span-2">
                 Other Supporting Documents <span class="guide">(Valid types are <b>jpg</b>, <b>png</b>, and <b>pdf</b>)</span>
@@ -169,6 +174,19 @@ h1{
 }
 form{
     @apply w-full
+}
+.tooltip-icon{
+    font-size:25px;
+}
+.tooltip-container{
+    @apply w-fit relative flex items-center
+}
+.tooltip-container:hover .tooltip-text{
+    @apply visible
+}
+.tooltip-text{
+    left:105%;
+    @apply absolute bg-slate-600 text-white p-2 rounded-lg z-10 invisible
 }
 
 </style>

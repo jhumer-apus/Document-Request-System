@@ -53,7 +53,21 @@
                 </label>
                 <div class="tooltip-container">
                     <font-awesome-icon :icon="['fas', 'circle-question']" class="tooltip-icon"/>
-                    <div class="tooltip-text">hiiii</div>
+                    <div class="tooltip-text">
+                        <ul>
+                            <li>Philippine Passport</li>
+                            <li>Voter's ID</li>
+                            <li>Driver's License</li>
+                            <li>PRC License</li>
+                            <li>SSS ID</li>
+                            <li>GSIS UMID</li>
+                            <li>Postal ID</li>
+                            <li>School ID</li>
+                            <li>TIN ID</li>
+                            <li>PhilHealth ID</li>
+                            <li>Senior Citizen ID</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <UploadFiles :limit="1" :isRequired="true" @passFiles="passID" id="forID" class="col-span-2"/>
@@ -186,7 +200,13 @@ form{
 }
 .tooltip-text{
     left:105%;
-    @apply absolute bg-slate-600 text-white p-2 rounded-lg z-10 invisible
+    @apply absolute bg-slate-600 text-white p-4 rounded-lg z-10 invisible pr-8
+}
+ul{
+    @apply list-disc
+}
+li{
+    @apply w-48
 }
 
 </style>

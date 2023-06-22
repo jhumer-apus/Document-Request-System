@@ -89,6 +89,9 @@
                         <p class="underline font-bold">JEOFFY M. FUNG</p>
                         <p class="text-center">Punong Barangay</p>
                     </div>
+                    <div class="printed-by">
+                        Printed by: {{user.admin_name}}
+                    </div>
                 </div>
             </div>
         </div>

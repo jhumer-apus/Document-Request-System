@@ -4,6 +4,7 @@ namespace App\Modules;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Residents
 {
@@ -55,6 +56,9 @@ class Residents
         }
         $user->pronouns = $user->sex =='male'?'he':'she';
         $user->pronouns_second = $user->sex =='male'?'his':'her';
+
+        $adminName = Auth::user()->first_name." ".Auth::user()->last_name;
+        $user->admin_name = $adminName;
 
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
         <img src="~/assets/images/DESIGN.jpg" class="block">
         <div class="absolute top-0 right-0 pt-4">
              <div class="flex items-center m-auto justify-around">
@@ -92,6 +92,9 @@
                         <br>
                         <p class="underline font-bold">JEOFFY M. FUNG</p>
                         <p class="text-center">Punong Barangay</p>
+                    </div>
+                    <div class="printed-by">
+                        Printed by: {{user.admin_name}}
                     </div>
                 </div>
             </div>

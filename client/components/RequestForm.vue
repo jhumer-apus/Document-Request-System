@@ -200,7 +200,7 @@ form{
 }
 .tooltip-text{
     left:105%;
-    @apply absolute bg-slate-600 text-white p-4 rounded-lg z-10 invisible pr-8
+    @apply absolute bg-slate-600 text-white px-8 rounded-lg z-10 invisible py-4
 }
 ul{
     @apply list-disc

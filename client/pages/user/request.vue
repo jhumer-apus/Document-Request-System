@@ -9,7 +9,7 @@
             <font-awesome-icon :icon="['fas', 'angle-right']" />
             <span :class="{highlight:page==4}">Review &amp; Submit</span>
         </div>
-        <SelectDocuments :error="errorPageOne" v-if="page==1"/>
+        <SelectDocumentsWithIcon :error="errorPageOne" v-if="page==1"/>
         <RequestForm :error="errorPageTwo" v-if="page==2"/>
         <PickUpSchedule :error="errorPageThree" v-if="page==3"/>
         <ReviewRequest v-if="page==4"/>

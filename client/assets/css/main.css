@@ -219,4 +219,6 @@ textarea{
 .change-password-form{
   @apply p-8
 }
-
+.printed-by{
+  @apply text-slate-600 absolute bottom-10
+}

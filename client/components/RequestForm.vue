@@ -51,29 +51,13 @@
                 <label class="col-span-2">
                     Valid ID <span class="guide">(Valid types are <b>jpg</b> and <b>png</b>)</span>
                 </label>
-                <div class="tooltip-container">
-                    <font-awesome-icon :icon="['fas', 'circle-question']" class="tooltip-icon"/>
-                    <div class="tooltip-text">
-                        <ul>
-                            <li>Philippine Passport</li>
-                            <li>Voter's ID</li>
-                            <li>Driver's License</li>
-                            <li>PRC License</li>
-                            <li>SSS ID</li>
-                            <li>GSIS UMID</li>
-                            <li>Postal ID</li>
-                            <li>School ID</li>
-                            <li>TIN ID</li>
-                            <li>PhilHealth ID</li>
-                            <li>Senior Citizen ID</li>
-                        </ul>
-                    </div>
-                </div>
+                <Tooltip :data="idList"/>
             </div>
             <UploadFiles :limit="1" :isRequired="true" @passFiles="passID" id="forID" class="col-span-2"/>
             <label class="col-span-2">
-                Other Supporting Documents <span class="guide">(Valid types are <b>jpg</b>, <b>png</b>, and <b>pdf</b>)</span>
+                Requirement/Prerequisite of Request <span class="guide">(Valid types are <b>jpg</b>, <b>png</b>, and <b>pdf</b>)</span>
             </label>
+            <Tooltip :data="idList"/>
             <UploadFiles :limit="5" :isRequired="false" @passFiles="passDocuments" id="forDocuments" class="col-span-2"/>
             <p class="error">{{error}}</p>
         </form>
@@ -91,11 +75,37 @@ export default {
             purposeOfRequest:'',
             validID:'',
             supportingDocuments:'',
+            requirements:[],
             spinning:false,
+            idList:["Philippine Passport","Voter's ID","Driver's License","PRC License", "SSS ID", "GSIS UMID","Postal ID","School ID","TIN ID", "PhilHealth ID", "Senior Citizen ID"],
+            requirements:""
         }
     },
     mounted(){
         this.getUser()
+        switch(this.$store.state.request.selectedDocument.name){
+            case "Barangay Clearance":
+                this.requirements = ["Purok Clearance"]
+                break
+            case "Barangay Permit":
+                this.requirements = ["None"]
+                break
+            case "Barangay Business Clearance":
+                this.requirements = ["Purok Clearance"]
+                break
+            case "Certificate of Residency":
+                this.requirements = ["Purok Clearance"]
+                break
+            case "Certificate of Indigency":
+                this.requirements = ["Purok Clearance"]
+                break
+            case "Cedula":
+                this.requirements = ["None"]
+                break
+            default:
+                this.requirements = ["None"]
+                break
+        }
     },
     watch:{
         purposeOfRequest(){
@@ -188,19 +198,6 @@ h1{
 }
 form{
     @apply w-full
-}
-.tooltip-icon{
-    font-size:25px;
-}
-.tooltip-container{
-    @apply w-fit relative flex items-center
-}
-.tooltip-container:hover .tooltip-text{
-    @apply visible
-}
-.tooltip-text{
-    left:105%;
-    @apply absolute bg-slate-600 text-white px-8 rounded-lg z-10 invisible py-4
 }
 ul{
     @apply list-disc

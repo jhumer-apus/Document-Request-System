@@ -56,7 +56,7 @@
                     
                     <div v-if="details.id_type=='pdf'"></div>
                 </div><br>
-                <h2>Supporting Documents</h2>
+                <h2>Requirement/Prerequisite of Request</h2>
                 <div class="doc-container" v-for="document in details.request_supporting_dcouments" :key="document.id">
                     <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">

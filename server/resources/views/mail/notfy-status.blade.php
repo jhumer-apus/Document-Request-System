@@ -3,16 +3,17 @@
 
 <br>
 <div>
-    Your request <b>{{$data->document_name}}</b> has been <span class="status">{{$data->status}}</span>.<br><br>
+    Your request <b>{{$data->document_name}}</b> has been <span class="status">{{$data->status}}</span>.<br>
     <?php
-        if($data->status != "rejected"){
-            echo "<p class='fee'>Please prepare an exact amount of P$data->fee upon recieving the document</p>";
+        if($data->status == "completed"){
+            echo "<p>Please get your $data->document_name at the office, thanks.</p><br>";
         }
-        if($data->status == "rejected" && $data->comment){
+        echo "<p>Document Fee: P$data->fee</p>";
+        if($data->status != "approved" && $data->comment){
             echo "<p>Comment: $data->comment</p>";
         }
         $status = ucfirst($data->status);
-        echo "<p>$status by: $data->admin_name</p>"
+        echo "<p> $status by: $data->admin_name</p>"
     ?>
 </div><br><br>
 

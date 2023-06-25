@@ -19,7 +19,7 @@ use App\Mail\NotifyStatus;
 Route::get('/', function () {
     $data = (object) array(
         'document_name' => "Cedula",
-        'status' => "rejected",
+        'status' => "completed",
         'comment'=>"Love you",
         'fee' => "100.00",
         'admin_name' => "Boyaks Mix"

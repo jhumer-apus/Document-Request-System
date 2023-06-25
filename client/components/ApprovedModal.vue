@@ -156,6 +156,7 @@ export default {
                 id: this.details.id,
                 status: 'completed',
                 comment: this.comment,
+                document: this.details.document_name,
                 fee: this.details.document_fee
             }
             await this.$axios.put('/admin/request/update-status', params).then(response=>{

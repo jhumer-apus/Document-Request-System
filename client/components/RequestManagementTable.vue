@@ -23,6 +23,7 @@
     <RequestModal :details="details" v-if="showRequestModal" @closeModal="showRequestModal = false"/>
     <ApprovedModal :details="details" v-if="showApprovedModal" @closeModal="closeApproveModal" @viewDocument="generatePDF"/>
     <CompleteModal :details="details" v-if="showCompleteModal" @closeModal="showCompleteModal = false"/>
+    <RejectedModal :details="details" v-if="showRejectModal" @closeModal="showRejectModal = false"/>
     <div id="content" v-if="showApprovedModal">
         <BarangayPermit v-if="doc_id == 2" :user="user"/>
         <BarangayClearance v-if="doc_id == 3" :user="user"/>
@@ -47,6 +48,7 @@ export default {
             showRequestModal:false,
             showApprovedModal:false,
             showCompleteModal:false,
+            showRejectModal:false,
             details:'',
             spinning:false,
             status:'pending',
@@ -82,24 +84,6 @@ export default {
         numericDate(date){
             return moment(date).format('yyyy-MM-DD')
         },
-        action(status){
-            if(status == 'approved'){
-                return 'Pickup Document'
-            }else if(status == 'rejected'){
-                return 'Submit missing documents'
-            }else{
-                return "-"
-            }
-        },
-        comment(status){
-            if(status == 'approved'){
-                return 'Document ready for pickup'
-            }else if(status == 'rejected'){
-                return 'Incomplete requirements'
-            }else{
-                return "-"
-            }
-        },
         renderID(id){
             const charID = id.toString()
             if(charID.length<6){
@@ -125,7 +109,7 @@ export default {
                     }else if(status == 'approved'){
                         this.getResidentDetails(id,user_id,doc_id)
                     }else{
-                        this.showCompleteModal = true
+                        this.showRejectModal = true
                         this.spinning = false
                     }
                 }).catch(err=>{

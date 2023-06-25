@@ -79,7 +79,13 @@
         <div class="bg-stone-200 p-4 rounded-md border border-stone-500 mt-2">
             {{details.purpose}}
         </div><br>
+        <h2 class="mb-2">Comments/Remarks(Rejection of Request Only)</h2>
+        <textarea rows="2" v-model="details.comment"></textarea>
+        <button class="flex items-center space-x-2 text-red-500 w-fit" @click="confirmModal=true">
+            <p>*Made a Mistake?</p><font-awesome-icon :icon="['fas', 'pen-to-square']"/>
+        </button><br>
     </div>
+    <ConfirmationModal message="Oops! Made a mistake? Do you want to APPROVE this request" @close="confirmModal=false" @yes="submit" v-if="confirmModal" />
     <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false"/>
     <Spin v-if="spinning"/>
   </div>
@@ -96,6 +102,7 @@ export default {
             viewImage:false,
             comment:'',
             spinning:false,
+            confirmModal:false,
         }
     },
     mounted(){
@@ -106,7 +113,7 @@ export default {
             this.spinning =true
             var params = {
                 id: this.details.id,
-                status: status,
+                status: "approved",
                 comment:this.comment,
                 document: document_name
 

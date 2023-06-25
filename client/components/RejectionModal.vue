@@ -13,7 +13,7 @@
         <textarea rows="4" v-model="comment" v-if="otherReasons"></textarea><br>
         <div class="flex space-x-4 m-auto w-fit">
             <button class="bg-slate-400 text-black p-2 w-32 rounded-md" @click="$emit('close')">Cancel</button>
-            <button class="bg-red-500 text-white p-2 w-32 rounded-md" @click="confirmModal = true">Reject</button>
+            <button class="bg-red-500 text-white p-2 w-32 rounded-md" @click="confirmModal=true" :disabled="!comment">Reject</button>
         </div>
     </div>
     <ConfirmationModal message="Oops! Made a mistake? Do you want to REJECT this request" @close="confirmModal = false" @yes="submit" v-if="confirmModal" />
@@ -45,26 +45,31 @@ export default {
             }
             console.log(this.comment);
         },
+    },
+    methods:{
         async submit(){
             this.confirmModal = false
             this.spinning = true
             var params ={
                 id: this.details.id,
                 status: 'rejected',
-                comment: this.comment,
+                comment: "",
                 fee: this.details.document_fee
             }
             await this.$axios.put('/admin/request/update-status', params).then(response=>{
                 this.$store.commit('trigger/updateRefreshRequestTable',this.$store.state.trigger.refreshRequestTable+1)
                 this.$emit('rejected')
+                this.confirmModal=false
                 this.spinning = false
             }).catch(err=>{
                 this.$store.commit('trigger/updateRefreshRequestTable',this.$store.state.trigger.refreshRequestTable+1)
                 this.$emit('rejected')
+                this.confirmModal=false
                 this.spinning = false
+                
             })
         }
-    },
+    }
 }
 </script>
 

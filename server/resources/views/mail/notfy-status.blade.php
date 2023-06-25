@@ -5,12 +5,14 @@
 <div>
     Your request <b>{{$data->document_name}}</b> has been <span class="status">{{$data->status}}</span>.<br><br>
     <?php
-        if($data->status == "completed"){
+        if($data->status != "rejected"){
             echo "<p class='fee'>Please prepare an exact amount of P$data->fee upon recieving the document</p>";
         }
-        if($data->comment){
+        if($data->status == "rejected" && $data->comment){
             echo "<p>Comment: $data->comment</p>";
         }
+        $status = ucfirst($data->status);
+        echo "<p>$status by: $data->admin_name</p>"
     ?>
 </div><br><br>
 
@@ -31,6 +33,10 @@ Thanks,<br>
     }
     .status{
         font-weight:bold;
+    }
+    p{
+        margin-block-start: 0em;
+        margin-block-end: 0em;
     }
 
 </style>

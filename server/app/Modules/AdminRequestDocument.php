@@ -117,7 +117,7 @@ class AdminRequestDocument{
         $status = $payload->status;
         $comment = $payload->comment;
         $document = $payload->document;
-        $fee = $payload->document_fee;
+        $fee = $payload->fee;
 
         Request::where('id', $id)->update([
             'status' => $status,
@@ -136,10 +136,11 @@ class AdminRequestDocument{
         }
         
         $admin = Auth::user();
+        $adminName = $admin->first_name.' '.$admin->last_name;
         
         Reports::create([
             'message' =>'Request '.$strId.' '.$document.' was '.$status. ' by',
-            'name' => $admin->first_name.' '.$admin->last_name,
+            'name' => $adminName,
             'status' => $status     
         ]);
 
@@ -147,7 +148,8 @@ class AdminRequestDocument{
             'document_name'=> $document,
             'status' => $status,
             'comment' => $comment,
-            'fee' => $fee
+            'fee' => $fee,
+            'admin_name'=> $adminName
         ];
         $this->notifyUser($id,$data);
 

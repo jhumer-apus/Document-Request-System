@@ -56,7 +56,7 @@
                     
                     <div v-if="details.id_type=='pdf'"></div>
                 </div><br>
-                <h2>Supporting Documents</h2>
+                <h2>Requirements/Prerequisite of Request</h2>
                 <div class="doc-container" v-for="document in details.request_supporting_dcouments" :key="document.id">
                     <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
@@ -108,7 +108,7 @@ export default {
                 id: this.details.id,
                 status: status,
                 comment:this.comment,
-                document: document_name
+                document: this.details.document_name
 
             }
             await this.$axios.put('/admin/request/update-status',params).then(response=>{

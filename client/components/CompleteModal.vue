@@ -79,8 +79,6 @@
         <div class="bg-stone-200 p-4 rounded-md border border-stone-500 mt-2">
             {{details.purpose}}
         </div><br>
-        <h2>Comments/Remarks</h2>
-        <textarea rows="4" v-model="comment"></textarea>
     </div>
     <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false"/>
     <Spin v-if="spinning"/>

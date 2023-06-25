@@ -67,6 +67,7 @@ class AdminRequestDocument{
             'email',
             'mobile_number',
             'purpose',
+            'comment',
             'schedule',
             'meridiem',
             'valid_ids.original_name as id_name',
@@ -120,7 +121,7 @@ class AdminRequestDocument{
 
         Request::where('id', $id)->update([
             'status' => $status,
-            'comment' => $comment
+            'comment' => $status == "rejected"? $comment: ""
         ]);
 
         $charID = (string) $id;

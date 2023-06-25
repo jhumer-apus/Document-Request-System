@@ -56,7 +56,10 @@
                 <p>{{details.document_fee}}</p>
 
             </div>
-        </div><br>
+        </div>
+        <button class="flex items-center space-x-2 text-red-500 w-fit" @click="isMistake = true">
+            <p>*Made a Mistake?</p><font-awesome-icon :icon="['fas', 'pen-to-square']"/>
+        </button><br>
         <div class="m-auto flex w-fit space-x-4 items-center">
             <input type="checkbox" v-on:change="changeCheck" class="w-fit">
             <p>Document successfully printed</p>
@@ -66,6 +69,7 @@
             <button class="bg-blue-500 p-2 w-32 text-white" @click="confirmModal = true">Complete</button>
         </div>
     </div>
+    <RejectionModal v-if="isMistake" :details="details" @close="isMistake=false" @rejected="rejected"/>
     <ConfirmationModal message="Are you sure you want to mark this request as completed?" @close="confirmModal = false" @yes="complete" v-if="confirmModal" />
     <Spin v-if="spinning"/>
   </div>
@@ -83,13 +87,15 @@ export default {
             currentPath:'',
             comment:'',
             spinning:false,
+            selectComment:'',
             comment:'',
             confirmModal:false,
+            isMistake:false
 
         }
     },
     mounted(){
-
+    
     },
     methods:{
         changeCheck(e){
@@ -161,6 +167,9 @@ export default {
                 this.$emit('closeModal')
                 this.spinning = false
             })
+        },
+        rejected(){
+            this.$emit('closeModal')
         }
     }
 }

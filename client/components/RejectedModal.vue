@@ -56,7 +56,7 @@
                     
                     <div v-if="details.id_type=='pdf'"></div>
                 </div><br>
-                <h2>Requirement/Prerequisite of Request</h2>
+                <h2>Supporting Documents</h2>
                 <div class="doc-container" v-for="document in details.request_supporting_dcouments" :key="document.id">
                     <div class="doc-wrapper">
                         <div class="flex items-center space-x-4 w-fit">
@@ -80,32 +80,13 @@
             {{details.purpose}}
         </div><br>
         <h2 class="mb-2">Comments/Remarks(Rejection of Request Only)</h2>
-        <select v-model="selectComment">
-            <option value="Incomplete or Incorrect Information">Incomplete or Incorrect Information</option>
-            <option value="Insufficient Requirements">Insufficient Requirement</option>
-            <option value="Invalid or Expired Documentation">Invalid or Expired Documentation</option>
-            <option value="Non-Compliance with Legal Requirements">Non-Compliance with Legal Requirements</option>
-            <option value="Duplicate Request">Duplicate Request</option>
-            <option value="Other Reasons">Other Reasons</option>
-        </select><br><br>
-        <textarea rows="4" v-model="comment" v-if="otherReasons"></textarea>
-        <div class="w-fit m-auto flex text-white space-x-4 mt-10">
-            <button class="bg-red-500 status-button" @click="confirm('reject')" :disabled="!comment">
-                <div class="status-wrapper">
-                    <font-awesome-icon :icon="['fas', 'thumbs-down']" flip="horizontal" class="thumbs-icon"/>
-                    <p>Reject</p>
-                </div>
-            </button>
-            <button class="bg-green-500 status-button" @click="confirm('approve')">
-                <div class="status-wrapper">
-                    <font-awesome-icon :icon="['fas', 'thumbs-up']" class="thumbs-icon"/>
-                    <p>Approve</p>
-                </div>
-            </button>
-        </div>
+        <textarea rows="2" v-model="details.comment"></textarea>
+        <button class="flex items-center space-x-2 text-red-500 w-fit" @click="confirmModal=true">
+            <p>*Made a Mistake?</p><font-awesome-icon :icon="['fas', 'pen-to-square']"/>
+        </button><br>
     </div>
-    <!-- <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false"/> -->
-    <ConfirmationModal :message="message" @close="confirmModal = false" @yes="submit" v-if="confirmModal" />
+    <ConfirmationModal message="Oops! Made a mistake? Do you want to APPROVE this request" @close="confirmModal=false" @yes="submit" v-if="confirmModal" />
+    <ViewImage v-if="viewImage" :path="currentPath" @closeImage="viewImage=false"/>
     <Spin v-if="spinning"/>
   </div>
 </template>
@@ -118,46 +99,23 @@ export default {
     data(){
         return{
             data:[],
-            // viewImage:false,
-            message:"",
+            viewImage:false,
             comment:'',
-            selectComment:"",
             spinning:false,
-            status:'',
             confirmModal:false,
-            otherReasons:false,
         }
     },
     mounted(){
 
     },
-    watch:{
-        selectComment(){
-            if(this.selectComment == "Other Reasons"){
-                this.comment = ""
-                this.otherReasons = true
-            }
-            else{
-                this.otherReasons = false
-                this.comment = this.selectComment
-            }
-            console.log(this.comment);
-        }
-    },
     methods:{
-        confirm(status){
-            this.status = status == "approve"? "approved":"rejected"
-            this.message = `Are you sure you want to ${status} this request?`
-            this.confirmModal = true
-        },
-        async submit(){
+        async submit(status,request_number, document_name){
             this.spinning =true
-            this.confirmModal = false
             var params = {
                 id: this.details.id,
-                status: this.status,
+                status: "approved",
                 comment:this.comment,
-                document: this.details.document_name
+                document: document_name
 
             }
             await this.$axios.put('/admin/request/update-status',params).then(response=>{
@@ -246,8 +204,5 @@ h2{
 }
 .icon{
     font-size:30px;
-}
-select, option{
-    @apply border border-black p-2
 }
 </style>

@@ -63,7 +63,7 @@
                     
                     <div v-if="details.id_type=='pdf'"></div>
                 </div><br>
-                <h2>Supporting Documents</h2><br>
+                <h2>Requirement/Prerequisite of Request</h2><br>
                 <div class="flex items-center space-x-2">
                     <label for="supporting_documents" class="reupload">
                         Add Files

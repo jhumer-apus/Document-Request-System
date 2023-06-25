@@ -1,8 +1,5 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-  server: {
-    host: process.env.APP_URL,
-  },
   head: {
     title: "eDokumento",
     htmlAttrs: {

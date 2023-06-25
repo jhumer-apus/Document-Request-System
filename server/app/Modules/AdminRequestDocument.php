@@ -120,7 +120,7 @@ class AdminRequestDocument{
 
         Request::where('id', $id)->update([
             'status' => $status,
-            'comment' => $comment
+            'comment' => $status == "rejected"? $comment: ""
         ]);
 
         $charID = (string) $id;

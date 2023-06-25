@@ -30,5 +30,11 @@ export default {
     left:105%;
     @apply absolute bg-slate-600 text-white px-8 rounded-lg z-10 invisible py-4
 }
+ul{
+    @apply list-disc
+}
+li{
+    @apply w-48
+}
 
 </style>

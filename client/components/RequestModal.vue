@@ -79,10 +79,18 @@
         <div class="bg-stone-200 p-4 rounded-md border border-stone-500 mt-2">
             {{details.purpose}}
         </div><br>
-        <h2>Comments/Remarks</h2>
-        <textarea rows="4" v-model="comment"></textarea>
+        <h2 class="mb-2">Comments/Remarks(Rejection of Request Only)</h2>
+        <select v-model="selectComment">
+            <option value="Incomplete or Incorrect Information">Incomplete or Incorrect Information</option>
+            <option value="Insufficient Requirements">Insufficient Requirement</option>
+            <option value="Invalid or Expired Documentation">Invalid or Expired Documentation</option>
+            <option value="Non-Compliance with Legal Requirements">Non-Compliance with Legal Requirements</option>
+            <option value="Duplicate Request">Duplicate Request</option>
+            <option value="Other Reasons">Other Reasons</option>
+        </select><br><br>
+        <textarea rows="4" v-model="comment" v-if="otherReasons"></textarea>
         <div class="w-fit m-auto flex text-white space-x-4 mt-10">
-            <button class="bg-red-500 status-button" @click="confirm('reject')">
+            <button class="bg-red-500 status-button" @click="confirm('reject')" :disabled="!comment">
                 <div class="status-wrapper">
                     <font-awesome-icon :icon="['fas', 'thumbs-down']" flip="horizontal" class="thumbs-icon"/>
                     <p>Reject</p>
@@ -113,13 +121,28 @@ export default {
             // viewImage:false,
             message:"",
             comment:'',
+            selectComment:"",
             spinning:false,
             status:'',
             confirmModal:false,
+            otherReasons:false,
         }
     },
     mounted(){
 
+    },
+    watch:{
+        selectComment(){
+            if(this.selectComment == "Other Reasons"){
+                this.comment = ""
+                this.otherReasons = true
+            }
+            else{
+                this.otherReasons = false
+                this.comment = this.selectComment
+            }
+            console.log(this.comment);
+        }
     },
     methods:{
         confirm(status){
@@ -223,5 +246,8 @@ h2{
 }
 .icon{
     font-size:30px;
+}
+select, option{
+    @apply border border-black p-2
 }
 </style>

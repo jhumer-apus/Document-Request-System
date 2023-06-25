@@ -47,17 +47,19 @@
                 <p class="label">Supporting Documents</p>
                 <span class="guide">Upload photo/scanned copy of your supporting documents.</span>
             </div>
-            <div class="flex items-center space-x-4 w-fit">
-                <label class="col-span-2">
+            <div class="flex items-center space-x-4 w-fit col-span-2">
+                <label>
                     Valid ID <span class="guide">(Valid types are <b>jpg</b> and <b>png</b>)</span>
                 </label>
                 <Tooltip :data="idList"/>
             </div>
             <UploadFiles :limit="1" :isRequired="true" @passFiles="passID" id="forID" class="col-span-2"/>
-            <label class="col-span-2">
-                Requirement/Prerequisite of Request <span class="guide">(Valid types are <b>jpg</b>, <b>png</b>, and <b>pdf</b>)</span>
-            </label>
-            <Tooltip :data="idList"/>
+            <div class="flex items-center space-x-4 w-fit col-span-2">
+                <label>
+                    Requirement/Prerequisite of Request <span class="guide">(Valid types are <b>jpg</b>, <b>png</b>, and <b>pdf</b>)</span>
+                </label>
+                <Tooltip :data="requirements"/>
+            </div>
             <UploadFiles :limit="5" :isRequired="false" @passFiles="passDocuments" id="forDocuments" class="col-span-2"/>
             <p class="error">{{error}}</p>
         </form>
@@ -85,22 +87,22 @@ export default {
         this.getUser()
         switch(this.$store.state.request.selectedDocument.name){
             case "Barangay Clearance":
-                this.requirements = ["Purok Clearance"]
+                this.requirements = ["Purok Clearance","Cedula"]
                 break
             case "Barangay Permit":
-                this.requirements = ["None"]
+                this.requirements = ["Cedula"]
                 break
             case "Barangay Business Clearance":
-                this.requirements = ["Purok Clearance"]
+                this.requirements = ["Purok Clearance","Barangay Clearance","Cedula"]
                 break
             case "Certificate of Residency":
-                this.requirements = ["Purok Clearance"]
+                this.requirements = ["Purok Clearance","Cedula"]
                 break
             case "Certificate of Indigency":
-                this.requirements = ["Purok Clearance"]
+                this.requirements = ["Purok Clearance","Ceddula"]
                 break
             case "Cedula":
-                this.requirements = ["None"]
+                this.requirements = ["Barangay Clearance"]
                 break
             default:
                 this.requirements = ["None"]
@@ -198,12 +200,6 @@ h1{
 }
 form{
     @apply w-full
-}
-ul{
-    @apply list-disc
-}
-li{
-    @apply w-48
 }
 
 </style>

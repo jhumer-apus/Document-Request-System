@@ -41,7 +41,7 @@ class Authenticate
             'token' =>  $token,
         ];
 
-        $this-setRequestToExpire();
+        $this->setRequestToExpire();
 
         return response()->json($response);
     }
@@ -57,7 +57,7 @@ class Authenticate
         
         if($admin && Hash::check($payload->password, $admin->password)){
             $token = $admin->createToken('access_token')->plainTextToken;
-            $this-setRequestToExpire();
+            $this->setRequestToExpire();
             return response(['token'=>$token],201);
         }
         return response(['message' => 'Invalid login details'], 401);
